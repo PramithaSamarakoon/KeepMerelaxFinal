@@ -30,8 +30,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-
-
     private BandClient client = null;
     private Button btnStart, btnConsent;
     private TextView txtStatus;

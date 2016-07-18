@@ -34,29 +34,24 @@ public class RecognizeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button button = (Button)findViewById(R.id.buttonSaveRecognize);
-        low=(EditText)findViewById(R.id.editTextLow);
-        peak=(EditText)findViewById(R.id.editTextPeak);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // saveUser();
+                saveUser();
                 Intent intent = new Intent(RecognizeActivity.this, AddContactActivity.class);
                 startActivity(intent);
 
             }
         });
-
+    }
+    private void saveUser(){
         Bundle bundle=getIntent().getExtras();
         name=bundle.getString("name");
         password=bundle.getString("password");
         dob=bundle.getString("dob");
         gender=bundle.getString("gender");
-
-  //      Toast.makeText(getApplicationContext(), name+password+dob+gender, Toast.LENGTH_SHORT);
-     //  System.out.println(name +password+dob+gender);
-    }
-    private void saveUser(){
+        low=(EditText)findViewById(R.id.editTextLow);
+        peak=(EditText)findViewById(R.id.editTextPeak);
 
         String NAME=name,PASS=password,DOB=dob,GENDER=gender;
         int LOW= Integer.valueOf(low.getText().toString());
@@ -64,19 +59,9 @@ public class RecognizeActivity extends AppCompatActivity {
 
         try{
             SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax",MODE_PRIVATE,null);
-            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS User(Name VARCHAR,Password VARCHAR,dob,VARCHAR,gender,VARCHAR);");
-            mydatabase.execSQL("INSERT INTO TutorialsPoint VALUES('"+NAME+"','"+PASS+"','"+DOB+"','"+GENDER+"','"+LOW+"','"+PEAK+"');");
-            System.out.println("Saved");
-
-//            DatabaseHandler db = new DatabaseHandler(this);
-//            db.addContact(new User(NAME,PASS,DOB,GENDER,LOW,PEAK));
-//            Toast.makeText(this,"Successfully save",Toast.LENGTH_SHORT).show();
-//            System.out.println("Saved");
-
-
-            //db.addContact(new Contac("Srinivas", "9199999999"));
-            //db.addContact(new Contac("Tommy", "9522222222"));
-            //db.addContact(new Contac("Karthik", "9533333333"));
+            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS user(Name VARCHAR,Password VARCHAR,dob VARCHAR,gender VARCHAR,low INTEGER, peak INTEGER);");
+            mydatabase.execSQL("INSERT INTO user VALUES('"+NAME+"','"+PASS+"','"+DOB+"','"+GENDER+"','"+LOW+"','"+PEAK+"');");
+            Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
 
         }
         catch(Exception e){

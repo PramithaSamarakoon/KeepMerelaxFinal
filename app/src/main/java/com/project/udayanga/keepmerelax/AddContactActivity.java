@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 public class AddContactActivity extends AppCompatActivity {
     Button save,view;
@@ -24,14 +25,13 @@ public class AddContactActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         save= (Button)findViewById(R.id.buttonSave);
-        view=(Button)findViewById(R.id.buttonSave);
+        view=(Button)findViewById(R.id.buttonView);
+        ratingBar=(RatingBar)findViewById(R.id.ratingBar);
+        ratingBar.setNumStars(2);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+            public void onClick(View view) {actionBarAction();}
         });
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +39,7 @@ public class AddContactActivity extends AppCompatActivity {
                 database();
             }
         });
-        save.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getUser();
@@ -47,12 +47,19 @@ public class AddContactActivity extends AppCompatActivity {
         });
     }
     public void database(){
+        name=(EditText)findViewById(R.id.editTextName);
+        number=(EditText)findViewById(R.id.editTextNumber);
+        ratingBar=(RatingBar)findViewById(R.id.ratingBar);
+
         String NAME=name.getText().toString(),NUMBER=number.getText().toString();
         int RATING=ratingBar.getNumStars();
         try{
             SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax",MODE_APPEND,null);
             mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Contact(Name VARCHAR,Number VARCHAR,rate INTEGER);");
-            mydatabase.execSQL("INSERT INTO User VALUES('"+NAME+"','"+NUMBER+"','"+RATING+"');");
+            mydatabase.execSQL("INSERT INTO Contact VALUES('"+NAME+"','"+NUMBER+"','"+RATING+"');");
+
+            Toast toast = Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT);
+            toast.show();
 
         }
         catch (Exception ex){
@@ -68,5 +75,13 @@ public class AddContactActivity extends AppCompatActivity {
         String password = resultSet.getString(1);
         //System.out.println(username+"\n"+password);
 
+    }
+    private void actionBarAction(){
+        name=(EditText)findViewById(R.id.editTextName);
+        number=(EditText)findViewById(R.id.editTextNumber);
+        ratingBar=(RatingBar)findViewById(R.id.ratingBar);
+        name.setText("");
+        number.setText("");
+        ratingBar.setNumStars(0);
     }
 }

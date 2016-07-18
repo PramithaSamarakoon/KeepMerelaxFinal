@@ -19,6 +19,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     DatePicker datePicker;
     String gender;
     RadioGroup radioGroup;
+    Button recognize,unrecognize;
     //String date= String.valueOf(datePicker.getDayOfMonth()+datePicker.getMonth()+datePicker.getYear());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +46,12 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
 
-        Button button=(Button)findViewById(R.id.buttonRecognize);
-        Button button1=(Button)findViewById(R.id.buttonUnRecognize);
+        recognize=(Button)findViewById(R.id.buttonRecognize);
+        unrecognize=(Button)findViewById(R.id.buttonUnRecognize);
 
 
 
-        button.setOnClickListener(new View.OnClickListener() {
+        recognize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //if(pass.getText()==conPass.getText()){
@@ -64,7 +65,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             //   }
             }
         });
-        button1.setOnClickListener(new View.OnClickListener() {
+        unrecognize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(CreateAccountActivity.this,UnrecognizeActivity.class);

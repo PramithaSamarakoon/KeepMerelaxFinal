@@ -11,21 +11,37 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.project.udayanga.keepmerelax.HomeActivity"
     tools:showIn="@layout/activity_home">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Account"
-        android:id="@+id/buttonCreateAccount"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/buttonLogin"
-        android:layout_below="@+id/buttonCreateAccount"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:id="@+id/buttonCreateAccount"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:id="@+id/buttonLogin"
+            android:layout_below="@+id/buttonCreateAccount"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="43dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SMS"
+            android:id="@+id/buttonSMS"
+            android:layout_below="@+id/buttonCreateAccount"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="43dp" />
+    </LinearLayout>
 </RelativeLayout>
