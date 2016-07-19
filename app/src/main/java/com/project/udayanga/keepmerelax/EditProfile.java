@@ -21,13 +21,21 @@ public class EditProfile extends AppCompatActivity {
         peak=(EditText)findViewById(R.id.editUpdatePeak);
         low=(EditText)findViewById(R.id.editUpdateLow);
 
+        Button buttonEdit=(Button)findViewById(R.id.buttonEdit);
 
-        Button button=(Button)findViewById(R.id.buttonEdit);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        getDatabaseValue();
+        name.setEnabled(false);
+        pass.setEnabled(false);
+        peak.setEnabled(false);
+        low.setEnabled(false);
+        
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getDatabaseValue();
+                name.setEnabled(true);
+                pass.setEnabled(true);
+                peak.setEnabled(true);
+                low.setEnabled(true);
             }
         });
     }
