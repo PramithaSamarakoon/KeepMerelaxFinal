@@ -10,34 +10,45 @@ import android.widget.EditText;
 
 public class EditProfile extends AppCompatActivity {
 
+    EditText name,pass,peak,low;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        final EditText name=(EditText)findViewById(R.id.editText);
-        final EditText pass=(EditText)findViewById(R.id.editText2);
-        Button button=(Button)findViewById(R.id.button);
+        name=(EditText)findViewById(R.id.editUpdateName);
+        pass=(EditText)findViewById(R.id.editUpdateDOB);
+        peak=(EditText)findViewById(R.id.editUpdatePeak);
+        low=(EditText)findViewById(R.id.editUpdateLow);
+
+
+        Button button=(Button)findViewById(R.id.buttonEdit);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax",MODE_PRIVATE,null);
-                    Cursor resultSet = mydatabase.rawQuery("Select * from user",null);
-                    resultSet.moveToFirst();
-                    String USERNAME = resultSet.getString(0);
-                    String PASSWORD = resultSet.getString(1);
-
-                    name.setText(USERNAME);
-                    pass.setText(PASSWORD);
-
-                }
-                catch (Exception ex){
-                    System.out.println(ex.getMessage());
-                }
-
+                getDatabaseValue();
             }
         });
+    }
+    private void getDatabaseValue(){
+        try {
+            SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax",MODE_PRIVATE,null);
+            Cursor resultSet = mydatabase.rawQuery("Select * from user",null);
+            resultSet.moveToFirst();
+            String USERNAME = resultSet.getString(0);
+            String PASSWORD = resultSet.getString(2);
+            String PEAK=resultSet.getString(4);
+            String LOW=resultSet.getString(5);
+
+            name.setText(USERNAME);
+            pass.setText(PASSWORD);
+            peak.setText(PEAK);
+            low.setText(LOW);
+
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
     }
 }

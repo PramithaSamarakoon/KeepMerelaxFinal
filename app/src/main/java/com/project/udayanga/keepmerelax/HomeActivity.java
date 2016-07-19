@@ -32,7 +32,6 @@ public class HomeActivity extends AppCompatActivity {
         });
         Button buttonCreate=(Button)findViewById(R.id.buttonCreateAccount);
         Button buttonLogin=(Button)findViewById(R.id.buttonLogin);
-        Button buttonSMS=(Button)findViewById(R.id.buttonSMS);
 
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,12 +47,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        buttonSMS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
     }
 
     @Override

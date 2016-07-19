@@ -38,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnStart, btnConsent;
     private TextView txtStatus;
     TextToSpeech tts;
-    static final String HIGH_HEART = "Your heart rate is too high";
-    static final String LOW_HEART = "Your heart rate is normal";
+    static final String HIGH_HEART = "Your heart rate is getting high";
+    static final String LOW_HEART = "Your heart rate is getting low";
+    static final String NORMAL_HEART = "Your heart rate is normal";
+
 
     private BandHeartRateEventListener mHeartRateEventListener = new BandHeartRateEventListener() {
         @Override
@@ -49,12 +51,19 @@ public class MainActivity extends AppCompatActivity {
                         + "Quality = %s\n", event.getHeartRate(), event.getQuality()));
                 //speakText(HIGH_HEART);
             }
-            if(event.getHeartRate()>=76){
+            if(75<event.getHeartRate()){
                 speakText(HIGH_HEART);
+                sendSMS();
             }
-            if(event.getHeartRate()<76){
+            if(70>event.getHeartRate()){
                 speakText(LOW_HEART);
+                sendSMS();
             }
+//            if(event.getHeartRate() < 75 && 70 < event.getHeartRate()){
+//                speakText(HIGH_HEART);
+//                sendSMS();
+//            }
+
 
         }
     };
@@ -128,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     private void sendSMS(){
         try{
             SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage("+94717981815", null, "Test message", null, null);
+            sms.sendTextMessage("+945612313", null, "Test message", null, null);
             Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
         }
         catch(Exception e){
