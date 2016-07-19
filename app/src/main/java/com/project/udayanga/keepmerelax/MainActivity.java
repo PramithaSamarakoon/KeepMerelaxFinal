@@ -2,6 +2,7 @@ package com.project.udayanga.keepmerelax;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,10 +10,13 @@ import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.microsoft.band.BandClient;
 import com.microsoft.band.BandClientManager;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtStatus;
     TextToSpeech tts;
     static final String HIGH_HEART = "Your heart rate is too high";
+    static final String LOW_HEART = "Your heart rate is normal";
 
     private BandHeartRateEventListener mHeartRateEventListener = new BandHeartRateEventListener() {
         @Override
@@ -42,8 +47,15 @@ public class MainActivity extends AppCompatActivity {
             if (event != null) {
                 appendToUI(String.format("Heart Rate = %d beats per minute\n"
                         + "Quality = %s\n", event.getHeartRate(), event.getQuality()));
+                //speakText(HIGH_HEART);
+            }
+            if(event.getHeartRate()>=76){
                 speakText(HIGH_HEART);
             }
+            if(event.getHeartRate()<76){
+                speakText(LOW_HEART);
+            }
+
         }
     };
     private void speakText(String text){
@@ -77,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent= new Intent(MainActivity.this,EditProfile.class);
+                startActivity(intent);
             }
         });
 
@@ -112,6 +124,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void sendSMS(){
+        try{
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage("+94717981815", null, "Test message", null, null);
+            Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
+        }
+        catch(Exception e){
+            Toast.makeText(MainActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+        }
     }
     @Override
     protected void onResume() {

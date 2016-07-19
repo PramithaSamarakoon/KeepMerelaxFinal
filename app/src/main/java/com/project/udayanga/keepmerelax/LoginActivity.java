@@ -30,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,13 +159,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax",MODE_PRIVATE,null);
-        Cursor resultSet = mydatabase.rawQuery("Select * from user",null);
-        resultSet.moveToFirst();
-        String USERNAME = resultSet.getString(1);
-        String PASSWORD = resultSet.getString(2);
-
-
+//        try {
+//
+//
+//            SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax", MODE_PRIVATE, null);
+//            Cursor resultSet = mydatabase.rawQuery("Select * from user", null);
+//            resultSet.moveToFirst();
+//            String USERNAME = resultSet.getString(0);
+//            String PASSWORD = resultSet.getString(1);
+//
+////         Store values at the time of the login attempt.
+//            String email = mEmailView.getText().toString();
+//            String password = mPasswordView.getText().toString();
+//            Toast.makeText(getApplicationContext(), USERNAME+"\n"+PASSWORD, Toast.LENGTH_SHORT).show();
+//
+//            if (email == USERNAME && password == PASSWORD) {
+//                showProgress(true);
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                startActivity(intent);
+//            } else {
+//                Toast.makeText(getApplicationContext(), "Login error", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), email+"\n"+password, Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//        catch (Exception ex){
+//            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
 
         if (mAuthTask != null) {
             return;
@@ -211,7 +231,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 Intent intent= new Intent(LoginActivity.this,MainActivity.class);
                 startActivity(intent);
-          
+
         }
     }
 

@@ -51,14 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         buttonSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage("+94717981815", null, "Test message", null, null);
-                    Toast.makeText(HomeActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
-                }
-                catch(Exception e){
-                    Toast.makeText(HomeActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
     }
