@@ -14,6 +14,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class CreateAccountActivity extends AppCompatActivity {
     EditText name,contact_number,email,pass,conPass,date,month,year;
     RadioButton male,female;
@@ -52,22 +54,25 @@ public class CreateAccountActivity extends AppCompatActivity {
         male=(RadioButton)findViewById(R.id.radioButtonMale);
         female=(RadioButton)findViewById(R.id.radioButtonFemale);
         radioGroup=(RadioGroup)findViewById(R.id.radioButtonGroup);
+        int g =radioGroup.getCheckedRadioButtonId();
+        RadioButton radioButton=(RadioButton)findViewById(g);
+        gender=radioButton.getText().toString();
 
         String dob=date.getText().toString()+"-"+month.getText().toString()+"-"+year.getText().toString();
 
         Intent intent= new Intent(CreateAccountActivity.this, RecognizeActivity.class);
-        if(pass.getText().toString()!=conPass.getText().toString()){
-            Toast.makeText(this,"Password and confirmed password should equal !",Toast.LENGTH_LONG).show();
-        }
-        else {
+        //if(!Objects.equals(pass.getText().toString(), conPass.getText().toString())){
+        //    Toast.makeText(this,"Password and confirmed password should equal !",Toast.LENGTH_LONG).show();
+        //}
+        //else {
             intent.putExtra("name", name.getText().toString());
             intent.putExtra("contact_number",contact_number.getText().toString());
             intent.putExtra("email",email.getText().toString());
             intent.putExtra("password",pass.getText().toString());
             intent.putExtra("dob",dob);
-            intent.putExtra("gender", "Male");
+            intent.putExtra("gender", gender);
             startActivity(intent);
-        }
+        //}
     }
     public void onUnRecognizeButtonClick(View view){
         Intent intent= new Intent(CreateAccountActivity.this,UnrecognizeActivity.class);
