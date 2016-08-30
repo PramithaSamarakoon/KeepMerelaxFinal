@@ -10,12 +10,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.project.udayanga.keepmerelax.DatabaseHelp.AddUser;
 
 public class RecognizeActivity extends AppCompatActivity {
 
     String name,password,dob,gender;
     EditText low,peak;
+    TextView statusField,roleField;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,15 +57,34 @@ public class RecognizeActivity extends AppCompatActivity {
         low=(EditText)findViewById(R.id.editTextLow);
         peak=(EditText)findViewById(R.id.editTextPeak);
 
+        statusField=(TextView)findViewById(R.id.statusField);
+        roleField=(TextView)findViewById(R.id.roleField);
+
         String NAME=name,PASS=password,DOB=dob,GENDER=gender;
         int LOW= Integer.valueOf(low.getText().toString());
         int PEAK=Integer.valueOf(peak.getText().toString());
 
         try{
-            SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax",MODE_PRIVATE,null);
-            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS user(Name VARCHAR,Password VARCHAR,dob VARCHAR,gender VARCHAR,low INTEGER, peak INTEGER);");
-            mydatabase.execSQL("INSERT INTO user VALUES('"+NAME+"','"+PASS+"','"+DOB+"','"+GENDER+"','"+LOW+"','"+PEAK+"');");
-            Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+
+            String contact_number = "0715612313";
+            String dob = "1991.03.05";
+            String email="u.senanayake91@gmail.com";
+            String gender="Male";
+            String low="30.5";
+            String name="Udayanga Senanayake";
+            String password="Senanayake";
+            String peak="50.2";
+
+            //method.setText("Post Method");
+            new AddUser(this,statusField,roleField,1).execute(contact_number,dob,email,gender,low,name,password,peak);
+            //new SigninActivity(this,status,role,1).execute(username,password);
+
+
+//            SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax",MODE_PRIVATE,null);
+//            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS user(Name VARCHAR,Password VARCHAR,dob VARCHAR,gender VARCHAR,low INTEGER, peak INTEGER);");
+//            mydatabase.execSQL("INSERT INTO user VALUES('"+NAME+"','"+PASS+"','"+DOB+"','"+GENDER+"','"+LOW+"','"+PEAK+"');");
+//            Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+
 
         }
         catch(Exception e){

@@ -35,7 +35,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         female=(RadioButton)findViewById(R.id.radioButtonFemale);
         //radioGroup =(RadioGroup)findViewById(R.id.)
 
-        datePicker =(DatePicker)findViewById(R.id.datePicker);
+        //datePicker =(DatePicker)findViewById(R.id.datePicker);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
