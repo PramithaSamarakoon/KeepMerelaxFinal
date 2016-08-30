@@ -17,7 +17,7 @@ import com.project.udayanga.keepmerelax.DatabaseHelp.AddUser;
 
 public class RecognizeActivity extends AppCompatActivity {
 
-    String name,password,dob,gender;
+    String name,contact_number,email,password,dob,gender;
     EditText low,peak;
     TextView statusField,roleField;
     @Override
@@ -52,6 +52,8 @@ public class RecognizeActivity extends AppCompatActivity {
         Bundle bundle=getIntent().getExtras();
 
         name=bundle.getString("name");
+        contact_number=bundle.getString("contact_number");
+        email=bundle.getString("email");
         password=bundle.getString("password");
         dob=bundle.getString("dob");
         gender=bundle.getString("gender");
@@ -61,23 +63,23 @@ public class RecognizeActivity extends AppCompatActivity {
         statusField=(TextView)findViewById(R.id.statusField);
         roleField=(TextView)findViewById(R.id.roleField);
 
-        String NAME=name,PASS=password,DOB=dob,GENDER=gender;
-        int LOW= Integer.valueOf(low.getText().toString());
-        int PEAK=Integer.valueOf(peak.getText().toString());
+//        String NAME=name,PASS=password,DOB=dob,GENDER=gender;
+        //int LOW= Integer.valueOf(low.getText().toString());
+       // int PEAK=Integer.valueOf(peak.getText().toString());
 
         try{
 
-            String contact_number = "0715612313";
-            String dob = "1991.03.05";
-            String email="u.senanayake91@gmail.com";
-            String gender="Male";
-            String low="30.5";
-            String name="Udayanga Senanayake";
-            String password="Senanayake";
-            String peak="50.2";
+            //String contact_number = "0715612313";
+            //String dob = "1991.03.05";
+            //String email="u.senanayake91@gmail.com";
+            //String gender="Male";
+            String LOW=low.getText().toString();
+            //String name="Udayanga Senanayake";
+            //String password="Senanayake";
+            String PEAK=peak.getText().toString();
 
             //method.setText("Post Method");
-            new AddUser(this,statusField,roleField,1).execute(contact_number,dob,email,gender,low,name,password,peak);
+            new AddUser(this,statusField,roleField,1).execute(contact_number,dob,email,gender,LOW,name,password,PEAK);
             //new SigninActivity(this,status,role,1).execute(username,password);
 
 

@@ -12,14 +12,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class CreateAccountActivity extends AppCompatActivity {
-    EditText name,pass,conPass;
+    EditText name,contact_number,email,pass,conPass,date,month,year;
     RadioButton male,female;
-    DatePicker datePicker;
     String gender;
     RadioGroup radioGroup;
-    Button recognize,unrecognize;
     //String date= String.valueOf(datePicker.getDayOfMonth()+datePicker.getMonth()+datePicker.getYear());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +26,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_account);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        name = (EditText)findViewById(R.id.editTextName);
-        pass=(EditText)findViewById(R.id.editTextPass);
-        conPass=(EditText)findViewById(R.id.editTextConfirmPass);
-        male=(RadioButton)findViewById(R.id.radioButtonMale);
-        female=(RadioButton)findViewById(R.id.radioButtonFemale);
-        //radioGroup =(RadioGroup)findViewById(R.id.)
-
-        //datePicker =(DatePicker)findViewById(R.id.datePicker);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,43 +36,42 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
 
-        recognize=(Button)findViewById(R.id.buttonRecognize);
-        unrecognize=(Button)findViewById(R.id.buttonUnRecognize);
 
-
-
-        recognize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //if(pass.getText()==conPass.getText()){
-                    Intent intent= new Intent(CreateAccountActivity.this, RecognizeActivity.class);
-
-                    intent.putExtra("name", name.getText().toString());
-                    intent.putExtra("password",pass.getText().toString());
-                    intent.putExtra("dob","19910305");
-                    intent.putExtra("gender","Male");
-                    startActivity(intent);
-            //   }
-            }
-        });
-        unrecognize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(CreateAccountActivity.this,UnrecognizeActivity.class);
-                startActivity(intent);
-            }
-        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    private void RecognizeButtonClick(){
+    public void onRecognizeButtonClick(View view){
 
+        name = (EditText)findViewById(R.id.editTextName);
+        contact_number=(EditText)findViewById(R.id.editTextContactNumber);
+        email=(EditText)findViewById(R.id.editTextEmail);
+        pass=(EditText)findViewById(R.id.editTextPass);
+        conPass=(EditText)findViewById(R.id.editTextConfirmPass);
+        date=(EditText)findViewById(R.id.editTextDate);
+        month=(EditText)findViewById(R.id.editTextMonth);
+        year=(EditText)findViewById(R.id.editTextYear);
+        male=(RadioButton)findViewById(R.id.radioButtonMale);
+        female=(RadioButton)findViewById(R.id.radioButtonFemale);
+        radioGroup=(RadioGroup)findViewById(R.id.radioButtonGroup);
 
+        String dob=date.getText().toString()+"-"+month.getText().toString()+"-"+year.getText().toString();
 
-
-
+        Intent intent= new Intent(CreateAccountActivity.this, RecognizeActivity.class);
+        if(pass.getText().toString()!=conPass.getText().toString()){
+            Toast.makeText(this,"Password and confirmed password should equal !",Toast.LENGTH_LONG).show();
+        }
+        else {
+            intent.putExtra("name", name.getText().toString());
+            intent.putExtra("contact_number",contact_number.getText().toString());
+            intent.putExtra("email",email.getText().toString());
+            intent.putExtra("password",pass.getText().toString());
+            intent.putExtra("dob",dob);
+            intent.putExtra("gender", "Male");
+            startActivity(intent);
+        }
     }
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-
+    public void onUnRecognizeButtonClick(View view){
+        Intent intent= new Intent(CreateAccountActivity.this,UnrecognizeActivity.class);
+        startActivity(intent);
     }
+
 }

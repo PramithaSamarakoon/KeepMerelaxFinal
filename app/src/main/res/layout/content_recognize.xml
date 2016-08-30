@@ -53,7 +53,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save"
+            android:text="Create User &amp; Add Contact"
             android:id="@+id/buttonSaveRecognize"
             android:layout_column="1" />
         <TextView

@@ -98,7 +98,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText"
+                    android:id="@+id/editTextDate"
                     android:hint="Date"
                     android:inputType="number"
                     android:maxLines="1"
@@ -108,7 +108,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText2"
+                    android:id="@+id/editTextMonth"
                     android:hint="Month"
                     android:inputType="number"
                     android:maxLines="1"
@@ -118,7 +118,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText3"
+                    android:id="@+id/editTextYear"
                     android:hint="Year"
                     android:inputType="number"
                     android:maxLines="1"
@@ -165,12 +165,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Recognized"
-                android:id="@+id/buttonRecognize" />
+                android:id="@+id/buttonRecognize"
+                android:onClick="onRecognizeButtonClick"/>
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Un-Recognized"
-                android:id="@+id/buttonUnRecognize" />
+                android:id="@+id/buttonUnRecognize"
+                android:onClick="onUnRecognizeButtonClick"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
