@@ -50,6 +50,7 @@ public class RecognizeActivity extends AppCompatActivity {
     }
     private void saveUser(){
         Bundle bundle=getIntent().getExtras();
+
         name=bundle.getString("name");
         password=bundle.getString("password");
         dob=bundle.getString("dob");
