@@ -23,11 +23,13 @@ import android.widget.Toast;
  * Created by udayanga on 8/31/16.
  */
 public class AddContact extends AsyncTask<String,Void,String> {
+    private TextView responseTxt;
     private int byGetOrPost = 0;
     private Context context;
 
-    public AddContact(Context context,int flag) {
+    public AddContact(Context context,TextView responseTxt,int flag) {
         this.context = context;
+        this.responseTxt=responseTxt;
         byGetOrPost = flag;
     }
     protected void onPreExecute(){
@@ -38,12 +40,8 @@ public class AddContact extends AsyncTask<String,Void,String> {
         if(byGetOrPost == 0){ //means by Get Method
 
             try{
-                String contact_number = (String)arg0[0];
-                String dob = (String)arg0[1];
-                String email = (String)arg0[2];
-                String gender = (String)arg0[3];
 
-                String link = "http://udayanga.me/kmr/get-contact.php?pid=10";
+                String link = "http://udayanga.me/kmr/get-all-contact.php";
 
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
@@ -115,6 +113,7 @@ public class AddContact extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result){
         //this.statusField.setText("Login Successful");
         //this.roleField.setText(result);
+        this.responseTxt.setText(result);
         Toast.makeText(this.context,result,Toast.LENGTH_LONG).show();
     }
 }

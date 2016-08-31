@@ -32,6 +32,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,6 +100,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        Button button=(Button)findViewById(R.id.button);
+        mEmailView=(AutoCompleteTextView)findViewById(R.id.email);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                isCorrectUserName(mEmailView.getText().toString());
+            }
+        });
     }
 
     private void populateAutoComplete() {
@@ -234,7 +247,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         }
     }
+    private void isCorrectUserName(String email){
+        String responseReturn = null;
+        String data = "";
+        try{
+            com.project.udayanga.keepmerelax.DatabaseHelp.GetUser getUser= new com.project.udayanga.keepmerelax.DatabaseHelp.GetUser(this,responseReturn);
+            getUser.execute(email);
+            String s=getUser.get().toString();
 
+            JSONParser parser_obj = new JSONParser();
+            JSONArray array_obj = (JSONArray) parser_obj.parse("String from web service");
+            System.out.println(s);
+
+        }
+        catch(Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            System.out.println("Error"+e.getMessage());
+        }
+    }
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");

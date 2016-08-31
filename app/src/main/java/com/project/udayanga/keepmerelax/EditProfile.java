@@ -53,7 +53,6 @@ public class EditProfile extends AppCompatActivity {
             pass.setText(PASSWORD);
             peak.setText(PEAK);
             low.setText(LOW);
-
         }
         catch (Exception ex){
             System.out.println(ex.getMessage());

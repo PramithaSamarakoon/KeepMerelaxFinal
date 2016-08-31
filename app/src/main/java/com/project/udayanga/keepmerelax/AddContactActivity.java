@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.udayanga.keepmerelax.DatabaseHelp.AddUser;
@@ -49,6 +50,7 @@ public class AddContactActivity extends AppCompatActivity {
         });
     }
     public void onSaveButtonClick(){
+        TextView textViewResponse=(TextView)findViewById(R.id.editTextResponse);
         name=(EditText)findViewById(R.id.editTextName);
         number=(EditText)findViewById(R.id.editTextNumber);
         relation=(EditText)findViewById(R.id.editTextRelationship);
@@ -60,7 +62,7 @@ public class AddContactActivity extends AppCompatActivity {
         String RATE= String.valueOf(ratingBar.getNumStars());
 
         try{
-            new com.project.udayanga.keepmerelax.DatabaseHelp.AddContact(this,1).execute(NAME,NUMBER,RELATION,RATE);
+            new com.project.udayanga.keepmerelax.DatabaseHelp.AddContact(this,textViewResponse,1).execute(NAME,NUMBER,RELATION,RATE);
             //new AddContact(this,1).execute(NAME,NUMBER,RELATION,RATE);
 
         }
@@ -90,8 +92,9 @@ public class AddContactActivity extends AppCompatActivity {
 
     }
     public void onViewButtonClick(){
+        TextView textViewResponse=(TextView)findViewById(R.id.editTextResponse);
         try{
-            new com.project.udayanga.keepmerelax.DatabaseHelp.AddContact(this,0).execute("","","","");
+            new com.project.udayanga.keepmerelax.DatabaseHelp.AddContact(this,textViewResponse,0).execute("","","","");
             //new AddContact(this,1).execute(NAME,NUMBER,RELATION,RATE);
 
         }
