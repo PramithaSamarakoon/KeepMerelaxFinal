@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -256,9 +257,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String s=getUser.get().toString();
 
             JSONParser parser_obj = new JSONParser();
-            JSONArray array_obj = (JSONArray) parser_obj.parse("String from web service");
-            System.out.println(s);
-
+            JSONArray array_obj = (JSONArray) parser_obj.parse(s);
+            JSONObject jObject =  (JSONObject)parser_obj.parse(s);
+            String aJsonString = jObject.getString("products");
+            //System.out.println(s);
+            Toast.makeText(this,aJsonString,Toast.LENGTH_SHORT).show();
         }
         catch(Exception e){
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
