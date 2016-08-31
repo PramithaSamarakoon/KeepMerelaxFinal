@@ -68,26 +68,9 @@ public class RecognizeActivity extends AppCompatActivity {
        // int PEAK=Integer.valueOf(peak.getText().toString());
 
         try{
-
-            //String contact_number = "0715612313";
-            //String dob = "1991.03.05";
-            //String email="u.senanayake91@gmail.com";
-            //String gender="Male";
             String LOW=low.getText().toString();
-            //String name="Udayanga Senanayake";
-            //String password="Senanayake";
             String PEAK=peak.getText().toString();
-
-            //method.setText("Post Method");
-            new AddUser(this,statusField,roleField,1).execute(contact_number,dob,email,gender,LOW,name,password,PEAK);
-            //new SigninActivity(this,status,role,1).execute(username,password);
-
-
-//            SQLiteDatabase mydatabase = openOrCreateDatabase("KeepMeRelax",MODE_PRIVATE,null);
-//            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS user(Name VARCHAR,Password VARCHAR,dob VARCHAR,gender VARCHAR,low INTEGER, peak INTEGER);");
-//            mydatabase.execSQL("INSERT INTO user VALUES('"+NAME+"','"+PASS+"','"+DOB+"','"+GENDER+"','"+LOW+"','"+PEAK+"');");
-//            Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
-
+            new AddUser(this,1).execute(contact_number,dob,email,gender,LOW,name,password,PEAK);
 
         }
         catch(Exception e){

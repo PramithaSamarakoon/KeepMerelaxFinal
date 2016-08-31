@@ -1,5 +1,6 @@
 package com.project.udayanga.keepmerelax.DatabaseHelp;
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -19,20 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * Created by udayanga on 8/30/16.
+ * Created by udayanga on 8/31/16.
  */
-public class AddUser extends AsyncTask<String,Void,String> {
-    private TextView statusField,roleField;
-    private Context context;
+public class AddContact extends AsyncTask<String,Void,String> {
     private int byGetOrPost = 0;
+    private Context context;
 
-    public AddUser(Context context,int flag) {
+    public AddContact(Context context,int flag) {
         this.context = context;
-        this.statusField = statusField;
-        this.roleField = roleField;
         byGetOrPost = flag;
     }
-
     protected void onPreExecute(){
 
     }
@@ -45,11 +42,8 @@ public class AddUser extends AsyncTask<String,Void,String> {
                 String dob = (String)arg0[1];
                 String email = (String)arg0[2];
                 String gender = (String)arg0[3];
-                String low = (String)arg0[4];
-                String name = (String)arg0[5];
-                String password  = (String)arg0[6];
-                String peak = (String)arg0[7];
-                String link = "http://myphpmysqlweb.hostei.com/login.php?username="+contact_number+"& password="+password;
+
+                String link = "http://udayanga.me/kmr/get-contact.php?pid=10";
 
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
@@ -75,24 +69,17 @@ public class AddUser extends AsyncTask<String,Void,String> {
         }
         else{
             try{
-                String contact_number = (String)arg0[0];
-                String dob = (String)arg0[1];
-                String email = (String)arg0[2];
-                String gender = (String)arg0[3];
-                String low = arg0[4];
-                String name = (String)arg0[5];
-                String password  = (String)arg0[6];
-                String peak = arg0[7];
+                String name = (String)arg0[0];
+                String relationship = (String)arg0[1];
+                String contact_number = (String)arg0[2];
+                String rating = (String)arg0[3];
 
-                String link="http://udayanga.me/kmr/add-user.php";
-                String data  = URLEncoder.encode("contact_number", "UTF-8") + "=" + URLEncoder.encode(contact_number, "UTF-8");
-                data += "&" + URLEncoder.encode("dob", "UTF-8") + "=" + URLEncoder.encode(dob, "UTF-8");
-                data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8");
-                data += "&" + URLEncoder.encode("gender", "UTF-8") + "=" + URLEncoder.encode(gender, "UTF-8");
-                data += "&" + URLEncoder.encode("low", "UTF-8") + "=" + URLEncoder.encode(low, "UTF-8");
-                data += "&" + URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8");
-                data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
-                data += "&" + URLEncoder.encode("peak", "UTF-8") + "=" + URLEncoder.encode(peak, "UTF-8");
+
+                String link="http://udayanga.me/kmr/add-contact.php";
+                String data  = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8");
+                data += "&" + URLEncoder.encode("relationship", "UTF-8") + "=" + URLEncoder.encode(relationship, "UTF-8");
+                data += "&" + URLEncoder.encode("contact_number", "UTF-8") + "=" + URLEncoder.encode(contact_number, "UTF-8");
+                data += "&" + URLEncoder.encode("rating", "UTF-8") + "=" + URLEncoder.encode(rating, "UTF-8");
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
@@ -114,9 +101,11 @@ public class AddUser extends AsyncTask<String,Void,String> {
                     sb.append(line);
                     break;
                 }
-
+                Toast.makeText(this.context,"Contact added successfully !",Toast.LENGTH_LONG).show();
                 return sb.toString();
+
             }
+
             catch(Exception e){
                 return new String("Exception: " + e.getMessage());
             }
@@ -127,7 +116,5 @@ public class AddUser extends AsyncTask<String,Void,String> {
         //this.statusField.setText("Login Successful");
         //this.roleField.setText(result);
         Toast.makeText(this.context,result,Toast.LENGTH_LONG).show();
-        Toast.makeText(this.context,"User added successfully !",Toast.LENGTH_LONG).show();
-
     }
 }

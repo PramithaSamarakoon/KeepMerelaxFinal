@@ -37,42 +37,52 @@ public class CreateAccountActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Button recognize=(Button)findViewById(R.id.buttonRecognize);
+        recognize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRecognizeButtonClick();
+            }
+        });
     }
-    public void onRecognizeButtonClick(View view){
+    public void onRecognizeButtonClick(){
+        try{
+            name = (EditText)findViewById(R.id.editTextName);
+            contact_number=(EditText)findViewById(R.id.editTextContactNumber);
+            email=(EditText)findViewById(R.id.editTextEmail);
+            pass=(EditText)findViewById(R.id.editTextPass);
+            conPass=(EditText)findViewById(R.id.editTextConfirmPass);
+            date=(EditText)findViewById(R.id.editTextDate);
+            month=(EditText)findViewById(R.id.editTextMonth);
+            year=(EditText)findViewById(R.id.editTextYear);
+            male=(RadioButton)findViewById(R.id.radioButtonMale);
+            female=(RadioButton)findViewById(R.id.radioButtonFemale);
+            radioGroup=(RadioGroup)findViewById(R.id.radioButtonGroup);
+            //int g =radioGroup.getCheckedRadioButtonId();
+           // RadioButton radioButton=(RadioButton)findViewById(g);
+            //gender=radioButton.getText().toString();
 
-        name = (EditText)findViewById(R.id.editTextName);
-        contact_number=(EditText)findViewById(R.id.editTextContactNumber);
-        email=(EditText)findViewById(R.id.editTextEmail);
-        pass=(EditText)findViewById(R.id.editTextPass);
-        conPass=(EditText)findViewById(R.id.editTextConfirmPass);
-        date=(EditText)findViewById(R.id.editTextDate);
-        month=(EditText)findViewById(R.id.editTextMonth);
-        year=(EditText)findViewById(R.id.editTextYear);
-        male=(RadioButton)findViewById(R.id.radioButtonMale);
-        female=(RadioButton)findViewById(R.id.radioButtonFemale);
-        radioGroup=(RadioGroup)findViewById(R.id.radioButtonGroup);
-        int g =radioGroup.getCheckedRadioButtonId();
-        RadioButton radioButton=(RadioButton)findViewById(g);
-        gender=radioButton.getText().toString();
+            String dob=date.getText().toString()+"-"+month.getText().toString()+"-"+year.getText().toString();
 
-        String dob=date.getText().toString()+"-"+month.getText().toString()+"-"+year.getText().toString();
-
-        Intent intent= new Intent(CreateAccountActivity.this, RecognizeActivity.class);
-        //if(!Objects.equals(pass.getText().toString(), conPass.getText().toString())){
-        //    Toast.makeText(this,"Password and confirmed password should equal !",Toast.LENGTH_LONG).show();
-        //}
-        //else {
+            Intent intent= new Intent(CreateAccountActivity.this, RecognizeActivity.class);
+            //if(!Objects.equals(pass.getText().toString(), conPass.getText().toString())){
+            //    Toast.makeText(this,"Password and confirmed password should equal !",Toast.LENGTH_LONG).show();
+            //}
+            //else {
             intent.putExtra("name", name.getText().toString());
             intent.putExtra("contact_number",contact_number.getText().toString());
             intent.putExtra("email",email.getText().toString());
             intent.putExtra("password",pass.getText().toString());
             intent.putExtra("dob",dob);
-            intent.putExtra("gender", gender);
+            intent.putExtra("gender", "Male");
             startActivity(intent);
-        //}
+            //}
+
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
     }
     public void onUnRecognizeButtonClick(View view){
         Intent intent= new Intent(CreateAccountActivity.this,UnrecognizeActivity.class);

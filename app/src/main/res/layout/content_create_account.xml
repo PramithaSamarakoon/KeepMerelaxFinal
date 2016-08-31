@@ -166,13 +166,13 @@
                 android:layout_height="wrap_content"
                 android:text="Recognized"
                 android:id="@+id/buttonRecognize"
-                android:onClick="onRecognizeButtonClick"/>
+                />
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Un-Recognized"
                 android:id="@+id/buttonUnRecognize"
-                android:onClick="onUnRecognizeButtonClick"/>
+                />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
