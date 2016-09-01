@@ -32,11 +32,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static android.Manifest.permission.INTERNET;
@@ -250,30 +251,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
     private void isCorrectUserName(String email){
         String responseReturn = null;
+        String username=null,password=null;
         String data = "";
         try{
             com.project.udayanga.keepmerelax.DatabaseHelp.GetUser getUser= new com.project.udayanga.keepmerelax.DatabaseHelp.GetUser(this,responseReturn);
             getUser.execute(email);
             String s=getUser.get();
 
-            //Toast.makeText(this,"Response "+s,Toast.LENGTH_SHORT).show();
-//            JSONParser parser_obj = new JSONParser();
-//            JSONObject jObject =  (JSONObject)parser_obj.parse(s);
-//
-//            //JSONObject  jsonRootObject = new JSONObject(s);
-//            JSONArray jsonArray = jObject.optJSONArray("product");
-//            for(int i=0; i < jsonArray.length(); i++){
-//                JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                String password = jsonObject.optString("password").toString();
-//                Toast.makeText(this,password,Toast.LENGTH_SHORT).show();
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(s);
+            JSONArray lang= (JSONArray) jsonObject.get("product");
+//            for(int i=0; i<lang.size(); i++){
+//                System.out.println("The " + i + " element of the array: "+lang.get(i));
 //            }
+            Iterator i = lang.iterator();
+            while (i.hasNext()) {
+                JSONObject innerObj = (JSONObject) i.next();
+                //System.out.println("language "+ innerObj.get("email") +" with level " + innerObj.get("password"));
+                username= (String) innerObj.get("email");
+                password= (String) innerObj.get("password");
+            }
 
+
+                Toast.makeText(this,  username +"\n"+password,Toast.LENGTH_LONG).show();
 
 
         }
         catch(Exception e){
-            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
-            System.out.println("Error"+e.getMessage());
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+            System.out.println("Error" + e.getMessage());
         }
     }
     private boolean isEmailValid(String email) {

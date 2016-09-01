@@ -29,8 +29,13 @@ import com.microsoft.band.sensors.BandHeartRateEvent;
 import com.microsoft.band.sensors.BandHeartRateEventListener;
 import com.microsoft.band.sensors.HeartRateConsentListener;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,16 +58,13 @@ public class MainActivity extends AppCompatActivity {
             }
             if(75<event.getHeartRate()){
                 speakText(HIGH_HEART);
-                sendSMS();
+                //sendSMS();
             }
             if(70>event.getHeartRate()){
                 speakText(LOW_HEART);
-                sendSMS();
+                //sendSMS();
             }
-//            if(event.getHeartRate() < 75 && 70 < event.getHeartRate()){
-//                speakText(HIGH_HEART);
-//                sendSMS();
-//            }
+
 
 
         }
@@ -133,16 +135,57 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button test=(Button)findViewById(R.id.test);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getRating();
+            }
+        });
     }
-    private void sendSMS(){
+    private void sendSMS(String number){
         try{
-            SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage("+945612313", null, "Test message", null, null);
-            Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
+            String message="This is the message to send";
+            System.out.println("SMS Send to" + number);
+            //SmsManager sms = SmsManager.getDefault();
+            //sms.sendTextMessage(number, null, message, null, null);
+            //Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
         }
         catch(Exception e){
             Toast.makeText(MainActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
+    }
+    private void getRating(){
+        try{
+            String number;double rating;
+            com.project.udayanga.keepmerelax.DatabaseHelp.GetContact getContact= new com.project.udayanga.keepmerelax.DatabaseHelp.GetContact(this);
+            getContact.execute("", "", "", "");
+            String s=getContact.get();
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(s);
+            JSONArray lang= (JSONArray) jsonObject.get("products");
+            Iterator i = lang.iterator();
+            //int[] rating = new int[lang.size()];
+
+            while (i.hasNext()) {
+                JSONObject innerObj = (JSONObject) i.next();
+                //System.out.println("language "+ innerObj.get("rating") +" with level " + innerObj.get("contact_number"));
+                number= (String) innerObj.get("contact_number");
+
+                sendSMS(number);
+                Thread.sleep(1000);//Time delay to send message. First message will send to a person who have most valued rating.
+            }
+
+        }
+        catch(Exception e){
+            Toast.makeText(this, e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+    private void calculateAVGHeartRate(int heart_rate){
+
+
     }
     @Override
     protected void onResume() {
