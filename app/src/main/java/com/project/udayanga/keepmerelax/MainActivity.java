@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private BandHeartRateEventListener mHeartRateEventListener = new BandHeartRateEventListener() {
         @Override
         public void onBandHeartRateChanged(final BandHeartRateEvent event) {
+
+
             if (event != null) {
                 appendToUI(String.format("Heart Rate = %d beats per minute\n"
                         + "Quality = %s\n", event.getHeartRate(), event.getQuality()));
@@ -173,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject innerObj = (JSONObject) i.next();
                 //System.out.println("language "+ innerObj.get("rating") +" with level " + innerObj.get("contact_number"));
                 number= (String) innerObj.get("contact_number");
-
+                //TODO Add a confirmation
+                //TODO Get GPS location
                 sendSMS(number);
                 Thread.sleep(1000);//Time delay to send message. First message will send to a person who have most valued rating.
             }
