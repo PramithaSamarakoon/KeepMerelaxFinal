@@ -69,7 +69,7 @@ public class GetUser extends AsyncTask<String,Void,String> {
         //this.statusField.setText("Login Successful");
         //this.roleField.setText(result);
         //responseReturn=result;
-       // Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
         //Toast.makeText(this.context,"User added successfully !",Toast.LENGTH_LONG).show();
 
     }

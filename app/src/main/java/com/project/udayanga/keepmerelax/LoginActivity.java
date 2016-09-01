@@ -254,14 +254,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         try{
             com.project.udayanga.keepmerelax.DatabaseHelp.GetUser getUser= new com.project.udayanga.keepmerelax.DatabaseHelp.GetUser(this,responseReturn);
             getUser.execute(email);
-            String s=getUser.get().toString();
+            String s=getUser.get();
 
-            JSONParser parser_obj = new JSONParser();
-            JSONArray array_obj = (JSONArray) parser_obj.parse(s);
-            JSONObject jObject =  (JSONObject)parser_obj.parse(s);
-            String aJsonString = jObject.getString("products");
-            //System.out.println(s);
-            Toast.makeText(this,aJsonString,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Response "+s,Toast.LENGTH_SHORT).show();
+//            JSONParser parser_obj = new JSONParser();
+//            JSONObject jObject =  (JSONObject)parser_obj.parse(s);
+//
+//            //JSONObject  jsonRootObject = new JSONObject(s);
+//            JSONArray jsonArray = jObject.optJSONArray("product");
+//            for(int i=0; i < jsonArray.length(); i++){
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                String password = jsonObject.optString("password").toString();
+//                Toast.makeText(this,password,Toast.LENGTH_SHORT).show();
+//            }
+
+
+
         }
         catch(Exception e){
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
