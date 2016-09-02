@@ -1,18 +1,32 @@
 package com.project.udayanga.keepmerelax;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,16 +47,26 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
+import static android.Manifest.permission.READ_CONTACTS;
+
 public class MainActivity extends AppCompatActivity {
+    NotificationManager manager;
+    Notification myNotication;
     private BandClient client = null;
     private Button btnStart, btnConsent;
     private TextView txtStatus;
     TextToSpeech tts;
+
+    private LocationManager locationMangaer = null;
+    private LocationListener locationListener = null;
+    private Boolean flag = false;
     static final String HIGH_HEART = "Your heart rate is getting high";
     static final String LOW_HEART = "Your heart rate is getting low";
     static final String NORMAL_HEART = "Your heart rate is normal";
@@ -57,27 +81,31 @@ public class MainActivity extends AppCompatActivity {
                 appendToUI(String.format("Heart Rate = %d beats per minute\n"
                         + "Quality = %s\n", event.getHeartRate(), event.getQuality()));
                 //speakText(HIGH_HEART);
+
             }
-            if(75<event.getHeartRate()){
-                speakText(HIGH_HEART);
-                //sendSMS();
+            if (75 < event.getHeartRate()) {
+                try {
+                    speakText(HIGH_HEART);
+                    sendAlert();
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            if(70>event.getHeartRate()){
+            if (70 > event.getHeartRate()) {
                 speakText(LOW_HEART);
-                //sendSMS();
             }
-
-
-
         }
     };
-    private void speakText(String text){
+
+    private void speakText(String text) {
         if (!tts.isSpeaking() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ttsGreater21(text);
-        } else if(!tts.isSpeaking()) {
+        } else if (!tts.isSpeaking()) {
             ttsUnder20(text);
         }
     }
+
     @SuppressWarnings("deprecation")
     private void ttsUnder20(String text) {
         HashMap<String, String> map = new HashMap<>();
@@ -87,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void ttsGreater21(String text) {
-        String utteranceId=this.hashCode() + "";
+        String utteranceId = this.hashCode() + "";
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 
@@ -102,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(MainActivity.this,EditProfile.class);
+                Intent intent = new Intent(MainActivity.this, EditProfile.class);
                 startActivity(intent);
             }
         });
@@ -129,24 +157,181 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
+                if (status != TextToSpeech.ERROR) {
                     tts.setLanguage(Locale.UK);
                 }
             }
         });
 
-        Button test=(Button)findViewById(R.id.test);
+        Button test = (Button) findViewById(R.id.test);
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getRating();
+                sendAlert();
+            }
+        });
+        locationMangaer = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+
+        Button test2 = (Button) findViewById(R.id.test2);
+        test2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Dialog();
+                flag = displayGpsStatus();
+                if (flag) {
+                    locationListener = new MyLocationListener();
+                    locationMangaer.requestLocationUpdates(LocationManager
+                            .GPS_PROVIDER, 5000, 10, locationListener);
+
+//                    if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+//                            PackageManager.PERMISSION_GRANTED &&
+//                            ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+//                                    PackageManager.PERMISSION_GRANTED) {
+                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for Activity#requestPermissions for more details.
+                        return;
+                    }
+
+
+//                    } else {
+//                       // Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+//                    }
+                          }else {
+                    alertbox("Gps Status!!", "Your GPS is: OFF");
+                }
+
+
             }
         });
     }
+    //----Method to Check GPS is enable or disable -----
+    private Boolean displayGpsStatus() {
+        ContentResolver contentResolver = getBaseContext()
+                .getContentResolver();
+        boolean gpsStatus = Settings.Secure
+                .isLocationProviderEnabled(contentResolver,
+                        LocationManager.GPS_PROVIDER);
+        if (gpsStatus) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+    //----------Method to create an AlertBox -------------
+    protected void alertbox(String title, String mymessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your Device's GPS is Disable")
+                .setCancelable(false)
+                .setTitle("** Gps Status **")
+                .setPositiveButton("Gps On",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // finish the current activity
+                                // AlertBoxAdvance.this.finish();
+                                Intent myIntent = new Intent(
+                                        Settings.ACTION_SECURITY_SETTINGS);
+                                startActivity(myIntent);
+                                dialog.cancel();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // cancel the dialog box
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+    //----------Listener class to get coordinates -------------
+    private class MyLocationListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location loc) {
+
+            Toast.makeText(getBaseContext(),"Location changed : Lat: " +
+                            loc.getLatitude()+ " Lng: " + loc.getLongitude(),
+                    Toast.LENGTH_SHORT).show();
+            String longitude = "Longitude: " +loc.getLongitude();
+
+            //Log.v(TAG, longitude);
+            String latitude = "Latitude: " +loc.getLatitude();
+            //Log.v(TAG, latitude);
+
+    /*----------to get City-Name from coordinates ------------- */
+            String cityName=null;
+            Geocoder gcd = new Geocoder(getBaseContext(),
+                    Locale.getDefault());
+            List<Address> addresses;
+            try {
+                addresses = gcd.getFromLocation(loc.getLatitude(), loc
+                        .getLongitude(), 1);
+                if (addresses.size() > 0)
+                    System.out.println(addresses.get(0).getLocality());
+                cityName=addresses.get(0).getLocality();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String s = longitude+"\n"+latitude +
+                    "\n\nMy Currrent City is: "+cityName;
+            //editLocation.setText(s);
+            System.out.println("Location "+s);
+            Toast.makeText(MainActivity.this,s,Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onStatusChanged(String provider,
+                                    int status, Bundle extras) {
+            // TODO Auto-generated method stub
+        }
+    }
+
+    public void Dialog(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure,You wanted to make decision");
+
+        alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                Toast.makeText(MainActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
     private void sendSMS(String number){
+
         try{
             String message="This is the message to send";
             System.out.println("SMS Send to" + number);
@@ -158,7 +343,33 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
     }
-    private void getRating(){
+    private void Notification(){
+
+        try{
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 1, intent, 0);
+            Notification.Builder builder = new Notification.Builder(MainActivity.this);
+
+            builder.setAutoCancel(false);
+            builder.setTicker("this is ticker text");
+            builder.setContentTitle("WhatsApp Notification");
+            builder.setContentText("You have a new message");
+            builder.setSmallIcon(R.mipmap.img);
+            builder.setContentIntent(pendingIntent);
+            builder.setOngoing(true);
+            builder.setSubText("This is subtext...");   //API level 16
+            builder.setNumber(100);
+            builder.build();
+
+            myNotication = builder.getNotification();
+            manager.notify(11, myNotication);
+
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+    private void sendAlert(){
         try{
             String number;double rating;
             com.project.udayanga.keepmerelax.DatabaseHelp.GetContact getContact= new com.project.udayanga.keepmerelax.DatabaseHelp.GetContact(this);
@@ -180,13 +391,12 @@ public class MainActivity extends AppCompatActivity {
                 sendSMS(number);
                 Thread.sleep(1000);//Time delay to send message. First message will send to a person who have most valued rating.
             }
-
         }
         catch(Exception e){
             Toast.makeText(this, e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
-    private void calculateAVGHeartRate(int heart_rate){
+    private void calculateRate(int heart_rate){
 
 
     }

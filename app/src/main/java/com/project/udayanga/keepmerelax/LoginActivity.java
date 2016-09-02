@@ -261,7 +261,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(s);
             JSONArray lang= (JSONArray) jsonObject.get("product");
-//            for(int i=0; i<lang.size(); i++){
+//            for(int i=0; ; i++){
 //                System.out.println("The " + i + " element of the array: "+lang.get(i));
 //            }
             Iterator i = lang.iterator();
