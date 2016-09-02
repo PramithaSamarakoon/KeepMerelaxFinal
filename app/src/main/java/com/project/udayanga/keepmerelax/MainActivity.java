@@ -178,46 +178,38 @@ public class MainActivity extends AppCompatActivity {
 
         Button test2 = (Button) findViewById(R.id.test2);
         test2.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
 
                 //Dialog();
-                flag = displayGpsStatus();
-                if (flag) {
-                    locationListener = new MyLocationListener();
-                    locationMangaer.requestLocationUpdates(LocationManager
-                            .GPS_PROVIDER, 5000, 10, locationListener);
-
-//                    if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
-//                            PackageManager.PERMISSION_GRANTED &&
-//                            ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
-//                                    PackageManager.PERMISSION_GRANTED) {
-                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for Activity#requestPermissions for more details.
-                        return;
-                    }
-
-
-//                    } else {
-//                       // Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+//                flag = isGPSOn();
+//                if (flag) {
+//                    locationListener = new MyLocationListener();
+//                    locationMangaer.requestLocationUpdates(LocationManager
+//                            .GPS_PROVIDER, 5000, 10, locationListener);
+//
+//                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                        // TODO: Consider calling
+//                        //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
+//                        // here to request the missing permissions, and then overriding
+//                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                        //                                          int[] grantResults)
+//                        // to handle the case where the user grants the permission. See the documentation
+//                        // for Activity#requestPermissions for more details.
+//                        return;
 //                    }
-                          }else {
-                    alertbox("Gps Status!!", "Your GPS is: OFF");
-                }
-
-
+//                          }else {
+//                    gpsAlert("Gps Status!!", "Your GPS is: OFF");
+//                }
             }
+
+            
         });
     }
-    //----Method to Check GPS is enable or disable -----
-    private Boolean displayGpsStatus() {
-        ContentResolver contentResolver = getBaseContext()
+
+    private Boolean isGPSOn() {
+       ContentResolver contentResolver = getBaseContext()
                 .getContentResolver();
         boolean gpsStatus = Settings.Secure
                 .isLocationProviderEnabled(contentResolver,
@@ -229,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-    //----------Method to create an AlertBox -------------
-    protected void alertbox(String title, String mymessage) {
+
+    protected void gpsAlert(String title, String mymessage) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Your Device's GPS is Disable")
                 .setCancelable(false)
@@ -256,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-    //----------Listener class to get coordinates -------------
     private class MyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location loc) {
@@ -338,37 +329,36 @@ public class MainActivity extends AppCompatActivity {
             //SmsManager sms = SmsManager.getDefault();
             //sms.sendTextMessage(number, null, message, null, null);
             //Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
+            Notification(number,message);
         }
         catch(Exception e){
             Toast.makeText(MainActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
     }
-    private void Notification(){
-
+    private void Notification(String number,String message){
+        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         try{
-            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this,ResponseToMessage.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 1, intent, 0);
             Notification.Builder builder = new Notification.Builder(MainActivity.this);
 
             builder.setAutoCancel(false);
             builder.setTicker("this is ticker text");
-            builder.setContentTitle("WhatsApp Notification");
-            builder.setContentText("You have a new message");
-            builder.setSmallIcon(R.mipmap.img);
+            builder.setContentTitle("Keep Me Relax Alert");
+            builder.setContentText("The text message is sent to "+ number );
+            builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setContentIntent(pendingIntent);
             builder.setOngoing(true);
-            builder.setSubText("This is subtext...");   //API level 16
-            builder.setNumber(100);
+            builder.setSubText("Tap hear to make a response to messge");   //API level 16
+            builder.setNumber(1);
             builder.build();
 
             myNotication = builder.getNotification();
             manager.notify(11, myNotication);
 
-        }
-        catch (Exception ex){
-            System.out.println(ex.getMessage());
-        }
-    }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }    }
     private void sendAlert(){
         try{
             String number;double rating;
@@ -389,7 +379,7 @@ public class MainActivity extends AppCompatActivity {
                 //TODO Add a confirmation
                 //TODO Get GPS location
                 sendSMS(number);
-                Thread.sleep(1000);//Time delay to send message. First message will send to a person who have most valued rating.
+                Thread.sleep(10000);//Time delay to send message. First message will send to a person who have most valued rating.
             }
         }
         catch(Exception e){
