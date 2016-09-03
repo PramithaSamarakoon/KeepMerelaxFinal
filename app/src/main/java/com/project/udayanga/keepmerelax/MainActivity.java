@@ -173,39 +173,18 @@ public class MainActivity extends AppCompatActivity {
                 sendAlert();
             }
         });
+
         locationMangaer = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);
+        flag = isGPSOn();
+        if (flag) {
+            locationListener = new MyLocationListener();
+            locationMangaer.requestLocationUpdates(LocationManager
+                    .GPS_PROVIDER, 5000, 10, locationListener);
 
-        Button test2 = (Button) findViewById(R.id.test2);
-        test2.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View v) {
-
-                //Dialog();
-//                flag = isGPSOn();
-//                if (flag) {
-//                    locationListener = new MyLocationListener();
-//                    locationMangaer.requestLocationUpdates(LocationManager
-//                            .GPS_PROVIDER, 5000, 10, locationListener);
-//
-//                    if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                        // TODO: Consider calling
-//                        //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-//                        // here to request the missing permissions, and then overriding
-//                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                        //                                          int[] grantResults)
-//                        // to handle the case where the user grants the permission. See the documentation
-//                        // for Activity#requestPermissions for more details.
-//                        return;
-//                    }
-//                          }else {
-//                    gpsAlert("Gps Status!!", "Your GPS is: OFF");
-//                }
-            }
-
-            
-        });
+        }else {
+            gpsAlert();
+        }
     }
 
     private Boolean isGPSOn() {
@@ -222,12 +201,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void gpsAlert(String title, String mymessage) {
+    protected void gpsAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Your Device's GPS is Disable")
                 .setCancelable(false)
-                .setTitle("** Gps Status **")
-                .setPositiveButton("Gps On",
+                .setTitle("Gps Status")
+                .setPositiveButton("Turn On",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // finish the current activity
@@ -249,18 +228,15 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
     private class MyLocationListener implements LocationListener {
+        String s="";
         @Override
         public void onLocationChanged(Location loc) {
 
-            Toast.makeText(getBaseContext(),"Location changed : Lat: " +
-                            loc.getLatitude()+ " Lng: " + loc.getLongitude(),
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getBaseContext(),"Location changed : Lat: " +
+//                            loc.getLatitude()+ " Lng: " + loc.getLongitude(),
+//                    Toast.LENGTH_SHORT).show();
             String longitude = "Longitude: " +loc.getLongitude();
-
-            //Log.v(TAG, longitude);
             String latitude = "Latitude: " +loc.getLatitude();
-            //Log.v(TAG, latitude);
-
     /*----------to get City-Name from coordinates ------------- */
             String cityName=null;
             Geocoder gcd = new Geocoder(getBaseContext(),
@@ -276,11 +252,16 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            String s = longitude+"\n"+latitude +
+             s = longitude+"\n"+latitude +
                     "\n\nMy Currrent City is: "+cityName;
-            //editLocation.setText(s);
-            System.out.println("Location "+s);
             Toast.makeText(MainActivity.this,s,Toast.LENGTH_LONG).show();
+            TextView lat=(TextView)findViewById(R.id.lat);
+            TextView lng=(TextView)findViewById(R.id.lng);
+            TextView location=(TextView)findViewById(R.id.loc);
+
+            lat.setText(latitude);
+            lng.setText(longitude);
+            location.setText(cityName);
         }
 
         @Override
@@ -324,8 +305,17 @@ public class MainActivity extends AppCompatActivity {
     private void sendSMS(String number){
 
         try{
-            String message="This is the message to send";
-            System.out.println("SMS Send to" + number);
+            TextView lat=(TextView)findViewById(R.id.lat);
+            TextView lng=(TextView)findViewById(R.id.lng);
+            TextView location=(TextView)findViewById(R.id.loc);
+
+            String LAT=lat.getText().toString();
+            String LNG=lng.getText().toString();
+            String LOCATION= location.getText().toString();
+
+
+            String message="The SMS sender is in criticle state. Now he/she is in " +LAT+ " " + ""+LNG+" " +LOCATION;
+            System.out.println("SMS Send to" + number + "\n"+message);
             //SmsManager sms = SmsManager.getDefault();
             //sms.sendTextMessage(number, null, message, null, null);
             //Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
@@ -349,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setContentIntent(pendingIntent);
             builder.setOngoing(true);
-            builder.setSubText("Tap hear to make a response to messge");   //API level 16
+            builder.setSubText("Tap hear to make a response to message");   //API level 16
             builder.setNumber(1);
             builder.build();
 
@@ -376,8 +366,6 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject innerObj = (JSONObject) i.next();
                 //System.out.println("language "+ innerObj.get("rating") +" with level " + innerObj.get("contact_number"));
                 number= (String) innerObj.get("contact_number");
-                //TODO Add a confirmation
-                //TODO Get GPS location
                 sendSMS(number);
                 Thread.sleep(10000);//Time delay to send message. First message will send to a person who have most valued rating.
             }

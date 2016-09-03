@@ -22,6 +22,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/steps" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lat"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lng"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/loc"/>
 
         <Button
             android:id="@+id/btnStart"

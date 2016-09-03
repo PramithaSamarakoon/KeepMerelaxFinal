@@ -10,4 +10,51 @@
     tools:showIn="@layout/activity_response_to_message"
     tools:context="com.project.udayanga.keepmerelax.ResponseToMessage">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:id="@+id/editText"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:maxLines="5"
+                android:inputType="text"
+                android:hint="Type your message here"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send"
+                android:id="@+id/buttonSend" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/buttonCancel" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reset"
+                android:id="@+id/buttonReset" />
+        </LinearLayout>
+    </LinearLayout>
+
+
 </RelativeLayout>
