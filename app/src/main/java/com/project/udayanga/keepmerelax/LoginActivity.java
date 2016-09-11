@@ -103,15 +103,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        Button button=(Button)findViewById(R.id.button);
+        //Button button=(Button)findViewById(R.id.button);
         mEmailView=(AutoCompleteTextView)findViewById(R.id.email);
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                isCorrectUserName(mEmailView.getText().toString());
-            }
-        });
+//        button.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                isCorrectUserName(mEmailView.getText().toString());
+//            }
+//        });
     }
 
     private void populateAutoComplete() {
@@ -265,6 +265,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //                System.out.println("The " + i + " element of the array: "+lang.get(i));
 //            }
             Iterator i = lang.iterator();
+
             while (i.hasNext()) {
                 JSONObject innerObj = (JSONObject) i.next();
                 //System.out.println("language "+ innerObj.get("email") +" with level " + innerObj.get("password"));

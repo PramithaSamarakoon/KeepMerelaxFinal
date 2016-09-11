@@ -18,52 +18,52 @@ import java.net.URL;
  * Created by udayanga on 9/1/16.
  */
 public class GetContact  extends AsyncTask<String,Void,String> {
-    private Context context;
+        private Context context;
 
-    public GetContact (Context context) {
-        this.context = context;
-    }
+        public GetContact (Context context) {
+            this.context = context;
+        }
 
-    protected void onPreExecute(){
+        protected void onPreExecute(){
 
-    }
-    @Override
-    protected String doInBackground(String... arg0) {
+        }
+        @Override
+        protected String doInBackground(String... arg0) {
 
-        try{
-            String email = (String)arg0[0];
+            try{
+                String loc = (String)arg0[0];
 
-            String link = "http://udayanga.me/kmr/get-all-contact.php";
+                String link = "http://udayanga.me/kmr/get-all-contact.php";
 
-            URL url = new URL(link);
-            HttpClient client = new DefaultHttpClient();
-            HttpGet request = new HttpGet();
-            request.setURI(new URI(link));
-            HttpResponse response = client.execute(request);
-            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                URL url = new URL(link);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(link));
+                HttpResponse response = client.execute(request);
+                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-            StringBuffer sb = new StringBuffer("");
-            String line="";
+                StringBuffer sb = new StringBuffer("");
+                String line="";
 
-            while ((line = in.readLine()) != null) {
-                sb.append(line);
-                break;
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                in.close();
+                return sb.toString();
             }
-            in.close();
-            return sb.toString();
-        }
 
-        catch(Exception e){
-            return new String("Exception: " + e.getMessage());
+            catch(Exception e){
+                return new String("Exception: " + e.getMessage());
+            }
         }
-    }
-    @Override
-    protected void onPostExecute(String result){
-        //this.statusField.setText("Login Successful");
-        //this.roleField.setText(result);
-        //responseReturn=result;
-       // Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
-        //Toast.makeText(this.context,"User added successfully !",Toast.LENGTH_LONG).show();
+        @Override
+        protected void onPostExecute(String result){
+            //this.statusField.setText("Login Successful");
+            //this.roleField.setText(result);
+            //responseReturn=result;
+           // Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this.context,"User added successfully !",Toast.LENGTH_LONG).show();
 
-    }
+        }
 }

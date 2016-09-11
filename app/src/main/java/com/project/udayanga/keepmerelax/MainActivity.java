@@ -26,6 +26,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -67,15 +68,14 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locationMangaer = null;
     private LocationListener locationListener = null;
     private Boolean flag = false;
-    static final String HIGH_HEART = "Your heart rate is getting high";
-    static final String LOW_HEART = "Your heart rate is getting low";
-    static final String NORMAL_HEART = "Your heart rate is normal";
+    static final String HIGH_HEART = " Your heart rate has reached a critical state. A message will be send to the necessary parties ";
+    static final String LOW_HEART = "Your heart rate has reached a critical state. A message will be send to the necessary parties ";
 
 
     private BandHeartRateEventListener mHeartRateEventListener = new BandHeartRateEventListener() {
         @Override
         public void onBandHeartRateChanged(final BandHeartRateEvent event) {
-
+            int low,high;
 
             if (event != null) {
                 appendToUI(String.format("Heart Rate = %d beats per minute\n"
@@ -83,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
                 //speakText(HIGH_HEART);
 
             }
-            if (75 < event.getHeartRate()) {
+            if (100 < event.getHeartRate()) {
                 try {
                     speakText(HIGH_HEART);
                     sendAlert();
-                    Thread.sleep(5000);
+                    Thread.sleep(50000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -121,6 +121,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        locationMangaer = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);
+        flag = isGPSOn();
+        if (flag) {
+            locationListener = new MyLocationListener();
+            locationMangaer.requestLocationUpdates(LocationManager
+                    .GPS_PROVIDER, 5000, 10, locationListener);
+
+        }else {
+            gpsAlert();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -166,25 +178,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button test = (Button) findViewById(R.id.test);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendAlert();
-            }
-        });
 
-        locationMangaer = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        flag = isGPSOn();
-        if (flag) {
-            locationListener = new MyLocationListener();
-            locationMangaer.requestLocationUpdates(LocationManager
-                    .GPS_PROVIDER, 5000, 10, locationListener);
-
-        }else {
-            gpsAlert();
-        }
     }
 
     private Boolean isGPSOn() {
@@ -212,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                                 // finish the current activity
                                 // AlertBoxAdvance.this.finish();
                                 Intent myIntent = new Intent(
-                                        Settings.ACTION_SECURITY_SETTINGS);
+                                        Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                 startActivity(myIntent);
                                 dialog.cancel();
                             }
@@ -252,8 +246,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-             s = longitude+"\n"+latitude +
-                    "\n\nMy Currrent City is: "+cityName;
+//             s = longitude+"\n"+latitude +
+//                    "\n\nMy Currrent City is: "+cityName;
             Toast.makeText(MainActivity.this,s,Toast.LENGTH_LONG).show();
             TextView lat=(TextView)findViewById(R.id.lat);
             TextView lng=(TextView)findViewById(R.id.lng);
@@ -314,12 +308,12 @@ public class MainActivity extends AppCompatActivity {
             String LOCATION= location.getText().toString();
 
 
-            String message="The SMS sender is in criticle state. Now he/she is in " +LAT+ " " + ""+LNG+" " +LOCATION;
-            System.out.println("SMS Send to" + number + "\n"+message);
-            //SmsManager sms = SmsManager.getDefault();
-            //sms.sendTextMessage(number, null, message, null, null);
-            //Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
-            Notification(number,message);
+            String message="The SMS sender is in a critical state.Please contact immediately. His current location is  " +LAT+ " " + ""+LNG+" " +LOCATION;
+            System.out.println("SMS Send to" + number + "\n" + message);
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(number, null, message, null, null);
+            Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
+            Notification(number, message);
         }
         catch(Exception e){
             Toast.makeText(MainActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
@@ -328,10 +322,13 @@ public class MainActivity extends AppCompatActivity {
     private void Notification(String number,String message){
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         try{
+
             Intent intent = new Intent(MainActivity.this,ResponseToMessage.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 1, intent, 0);
             Notification.Builder builder = new Notification.Builder(MainActivity.this);
 
+
+            intent.putExtra("number", number);
             builder.setAutoCancel(false);
             builder.setTicker("this is ticker text");
             builder.setContentTitle("Keep Me Relax Alert");
@@ -339,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setContentIntent(pendingIntent);
             builder.setOngoing(true);
-            builder.setSubText("Tap hear to make a response to message");   //API level 16
+            builder.setSubText("Tap here to make a response to message");   //API level 16
             builder.setNumber(1);
             builder.build();
 
@@ -351,9 +348,12 @@ public class MainActivity extends AppCompatActivity {
         }    }
     private void sendAlert(){
         try{
-            String number;double rating;
+            String number,location;double rating;
+            String state;
+            TextView loc=(TextView)findViewById(R.id.loc);
+            String LOC=loc.getText().toString();
             com.project.udayanga.keepmerelax.DatabaseHelp.GetContact getContact= new com.project.udayanga.keepmerelax.DatabaseHelp.GetContact(this);
-            getContact.execute("", "", "", "");
+            getContact.execute(LOC, "", "", "");
             String s=getContact.get();
 
             JSONParser jsonParser = new JSONParser();
@@ -366,8 +366,17 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject innerObj = (JSONObject) i.next();
                 //System.out.println("language "+ innerObj.get("rating") +" with level " + innerObj.get("contact_number"));
                 number= (String) innerObj.get("contact_number");
-                sendSMS(number);
-                Thread.sleep(10000);//Time delay to send message. First message will send to a person who have most valued rating.
+                //location=(String) innerObj.get("loc");
+                //state=(String)lang.get(Integer.parseInt("success"));
+                //if(location==LOC){
+                    sendSMS(number);
+                //}else if(state=="0"){
+                //    sendSMS();
+                //}
+
+                //Thread.sleep(10000);
+                break;
+                //Time delay to send message. First message will send to a person who have most valued rating.
             }
         }
         catch(Exception e){

@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/editTextDate"
                     android:hint="Date"
-                    android:inputType="number"
+                    android:inputType="date"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:maxLength="2"/>
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/editTextMonth"
                     android:hint="Month"
-                    android:inputType="number"
+                    android:inputType="date"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:maxLength="2"/>
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/editTextYear"
                     android:hint="Year"
-                    android:inputType="number"
+                    android:inputType="date"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:maxLength="2"/>

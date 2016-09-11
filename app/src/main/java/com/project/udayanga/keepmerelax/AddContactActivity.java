@@ -97,6 +97,7 @@ public class AddContactActivity extends AppCompatActivity {
             new com.project.udayanga.keepmerelax.DatabaseHelp.AddContact(this,textViewResponse,0).execute("","","","");
             //new AddContact(this,1).execute(NAME,NUMBER,RELATION,RATE);
 
+
         }
         catch(Exception e){
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
@@ -115,6 +116,8 @@ public class AddContactActivity extends AppCompatActivity {
         name=(EditText)findViewById(R.id.editTextName);
         number=(EditText)findViewById(R.id.editTextNumber);
         ratingBar=(RatingBar)findViewById(R.id.ratingBar);
+        relation=(EditText)findViewById(R.id.editTextRelationship);
+        relation.setText("");
         name.setText("");
         number.setText("");
         ratingBar.setNumStars(0);

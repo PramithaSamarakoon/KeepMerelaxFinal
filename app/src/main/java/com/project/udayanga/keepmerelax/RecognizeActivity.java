@@ -60,8 +60,7 @@ public class RecognizeActivity extends AppCompatActivity {
         low=(EditText)findViewById(R.id.editTextLow);
         peak=(EditText)findViewById(R.id.editTextPeak);
 
-        statusField=(TextView)findViewById(R.id.statusField);
-        roleField=(TextView)findViewById(R.id.roleField);
+
 
 //        String NAME=name,PASS=password,DOB=dob,GENDER=gender;
         //int LOW= Integer.valueOf(low.getText().toString());

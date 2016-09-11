@@ -13,10 +13,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/img"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
@@ -53,15 +52,6 @@
                 android:value="com.project.udayanga.keepmerelax.CreateAccountActivity" />
         </activity>
         <activity
-            android:name=".UnrecognizeActivity"
-            android:label="@string/title_activity_unrecognize"
-            android:parentActivityName=".CreateAccountActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.project.udayanga.keepmerelax.CreateAccountActivity" />
-        </activity>
-        <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".HomeActivity" >
@@ -81,6 +71,11 @@
         <activity
             android:name=".ResponseToMessage"
             android:label="@string/title_activity_response_to_message"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".UnrecognizeActivity"
+            android:label="@string/title_activity_un_recognize2"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
