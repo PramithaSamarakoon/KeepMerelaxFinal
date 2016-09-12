@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
+    private Button forget_pass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,6 +221,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
+            forget_pass =(Button)findViewById(R.id.forget_password_button);
+            forget_pass.setVisibility(View.VISIBLE);
         }
 
         // Check for a valid email address.
@@ -228,10 +230,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
+            forget_pass =(Button)findViewById(R.id.forget_password_button);
+            forget_pass.setVisibility(View.VISIBLE);
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
+            forget_pass =(Button)findViewById(R.id.forget_password_button);
+            forget_pass.setVisibility(View.VISIBLE);
         }
 
         if (cancel) {

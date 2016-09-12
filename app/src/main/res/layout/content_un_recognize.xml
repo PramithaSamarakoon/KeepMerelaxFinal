@@ -132,6 +132,4 @@
             android:id="@+id/txtStatus"/>
 
     </LinearLayout>
-
-
 </RelativeLayout>

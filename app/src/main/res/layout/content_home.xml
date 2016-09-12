@@ -25,16 +25,6 @@
             android:src="@mipmap/img"
             android:layout_weight="0.57"
             android:layout_gravity="center" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create Account"
-            android:id="@+id/buttonCreateAccount"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp" />
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,8 +33,13 @@
             android:layout_below="@+id/buttonCreateAccount"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp" />
-
-
-
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:id="@+id/buttonCreateAccount"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"/>
     </LinearLayout>
 </RelativeLayout>
