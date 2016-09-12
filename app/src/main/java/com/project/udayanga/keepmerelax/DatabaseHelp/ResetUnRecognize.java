@@ -61,8 +61,8 @@ public class ResetUnRecognize extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result){
         //this.statusField.setText("Login Successful");
         //this.roleField.setText(result);
-        Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
-        Toast.makeText(this.context,"User added successfully !",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.context,"Database Reset successfully !",Toast.LENGTH_LONG).show();
 
     }
 }

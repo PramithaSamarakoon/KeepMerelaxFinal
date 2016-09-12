@@ -86,8 +86,9 @@ public class UnrecognizeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                resetAll();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 
@@ -104,13 +105,16 @@ public class UnrecognizeActivity extends AppCompatActivity {
         btnStart3 = (Button) findViewById(R.id.btnStart3);
 
         btnStop=(Button)findViewById(R.id.btnStop);
-        btnStop2=(Button)findViewById(R.id.btnStop);
-        btnStop3=(Button)findViewById(R.id.btnStop);
+        btnStop2=(Button)findViewById(R.id.btnStop2);
+        btnStop3=(Button)findViewById(R.id.btnStop3);
 
 
         btnStart.setEnabled(false);
-        btnStart.setEnabled(false);
-
+        btnStart2.setEnabled(false);
+        btnStart3.setEnabled(false);
+        btnStop.setEnabled(false);
+        btnStop2.setEnabled(false);
+        btnStop3.setEnabled(false);
 
         final WeakReference<Activity> reference = new WeakReference<Activity>(this);
         btnConsent.setOnClickListener(new OnClickListener() {
@@ -118,6 +122,8 @@ public class UnrecognizeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new HeartRateConsentTask().execute(reference);
+                btnStart.setEnabled(true);
+
             }
         });
 
@@ -137,6 +143,8 @@ public class UnrecognizeActivity extends AppCompatActivity {
                 txtStatus.setText("");
                 new HeartRateSubscriptionTask().execute();
                 chronometer1.start();
+                btnStop.setEnabled(true);
+                btnStart.setEnabled(false);
             }
         });
         btnStart2.setOnClickListener(new OnClickListener() {
@@ -145,6 +153,8 @@ public class UnrecognizeActivity extends AppCompatActivity {
                 txtStatus.setText("");
                 new HeartRateSubscriptionTask().execute();
                 chronometer2.start();
+                btnStop2.setEnabled(true);
+                btnStart2.setEnabled(false);
             }
         });
         btnStart3.setOnClickListener(new OnClickListener() {
@@ -153,19 +163,17 @@ public class UnrecognizeActivity extends AppCompatActivity {
                 txtStatus.setText("");
                 new HeartRateSubscriptionTask().execute();
                 chronometer3.start();
+                btnStop3.setEnabled(true);
+                btnStart3.setEnabled(false);
             }
         });
-
-
-
-
-
-
         btnStop.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 chronometer1.stop();
                 onPause();
+                btnStart2.setEnabled(true);
+                btnStop.setEnabled(false);
             }
         });
         btnStop2.setOnClickListener(new OnClickListener() {
@@ -173,6 +181,8 @@ public class UnrecognizeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 chronometer2.stop();
                 onPause();
+                btnStart3.setEnabled(true);
+                btnStop2.setEnabled(false);
             }
         });
         btnStop3.setOnClickListener(new OnClickListener() {
@@ -180,7 +190,7 @@ public class UnrecognizeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onPause();
                 chronometer3.stop();
-
+                btnStop3.setEnabled(false);
             }
         });
 
@@ -317,5 +327,12 @@ public class UnrecognizeActivity extends AppCompatActivity {
     }
     private void resetAll(){
         new com.project.udayanga.keepmerelax.DatabaseHelp.ResetUnRecognize(this).execute();
+        btnStart.setEnabled(true);
+        btnStart2.setEnabled(false);
+        btnStart3.setEnabled(false);
+        btnStop.setEnabled(false);
+        btnStop2.setEnabled(false);
+        btnStop3.setEnabled(false);
+
     }
 }
