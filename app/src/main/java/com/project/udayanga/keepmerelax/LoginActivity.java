@@ -260,7 +260,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String username=null,password=null;
         String data = "";
         try{
-            com.project.udayanga.keepmerelax.DatabaseHelp.GetUser getUser= new com.project.udayanga.keepmerelax.DatabaseHelp.GetUser(this,responseReturn);
+            com.project.udayanga.keepmerelax.DatabaseHelp.GetUser getUser= new com.project.udayanga.keepmerelax.DatabaseHelp.GetUser(this,responseReturn,0);
             getUser.execute(email);
             String s=getUser.get();
 
