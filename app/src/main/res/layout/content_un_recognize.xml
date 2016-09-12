@@ -16,7 +16,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="10dp">
 
         <TextView
@@ -24,7 +24,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textViewDescription"
-            android:text="Please wear the band and press the button for 3 hours" />
+            android:text="@string/help_text_unrecognize" />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -43,10 +43,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Relaxing"
-                    android:textSize="30dp"/>
+                    android:textSize="30sp"/>
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:id="@+id/imageView"
                     android:src="@mipmap/ic_sleep"
                     android:layout_weight="0.57"
@@ -90,10 +90,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Walking"
-                    android:textSize="30dp"/>
+                    android:textSize="30sp"/>
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:id="@+id/imageView2"
                     android:src="@mipmap/ic_walking"
                     android:layout_weight="0.57"
@@ -136,10 +136,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Running"
-                    android:textSize="30dp"/>
+                    android:textSize="30sp"/>
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:id="@+id/imageView3"
                     android:src="@mipmap/ic_running"
                     android:layout_weight="0.57"
@@ -168,16 +168,6 @@
                     android:layout_gravity="center"/>
             </LinearLayout>
         </LinearLayout>
-
-
-
-
-
-
-
-
-
-
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -187,7 +177,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtStatus"/>
-
     </LinearLayout>
     </ScrollView>
 </RelativeLayout>

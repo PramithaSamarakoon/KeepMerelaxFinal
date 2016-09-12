@@ -34,4 +34,5 @@
     <string name="consent">Heart Rate Consent</string>
     <string name="title_activity_response_to_message">Response To Message</string>
     <string name="title_activity_un_recognize2">Measure Heart rate</string>
+    <string name="help_text_unrecognize">Please wear the band and press the button for 3 hours</string>
 </resources>

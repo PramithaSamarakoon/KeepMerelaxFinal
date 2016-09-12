@@ -95,10 +95,42 @@ public class UnrecognizeActivity extends AppCompatActivity {
         final Chronometer chronometer2= (Chronometer)findViewById(R.id.chronometer2);
         final Chronometer chronometer3= (Chronometer)findViewById(R.id.chronometer3);
 
+
+        btnConsent = (Button) findViewById(R.id.btnConsent);
+
         txtStatus = (TextView) findViewById(R.id.txtStatus);
         btnStart = (Button) findViewById(R.id.btnStart);
         btnStart2 = (Button) findViewById(R.id.btnStart2);
         btnStart3 = (Button) findViewById(R.id.btnStart3);
+
+        btnStop=(Button)findViewById(R.id.btnStop);
+        btnStop2=(Button)findViewById(R.id.btnStop);
+        btnStop3=(Button)findViewById(R.id.btnStop);
+
+
+        btnStart.setEnabled(false);
+        btnStart.setEnabled(false);
+
+
+        final WeakReference<Activity> reference = new WeakReference<Activity>(this);
+        btnConsent.setOnClickListener(new OnClickListener() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onClick(View v) {
+                new HeartRateConsentTask().execute(reference);
+            }
+        });
+
+        tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    tts.setLanguage(Locale.UK);
+                }
+            }
+        });
+
+        //Start button action
         btnStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,28 +156,11 @@ public class UnrecognizeActivity extends AppCompatActivity {
             }
         });
 
-        final WeakReference<Activity> reference = new WeakReference<Activity>(this);
 
-        btnConsent = (Button) findViewById(R.id.btnConsent);
-        btnConsent.setOnClickListener(new OnClickListener() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public void onClick(View v) {
-                new HeartRateConsentTask().execute(reference);
-            }
-        });
 
-        tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    tts.setLanguage(Locale.UK);
-                }
-            }
-        });
-        btnStop=(Button)findViewById(R.id.btnStop);
-        btnStop2=(Button)findViewById(R.id.btnStop);
-        btnStop3=(Button)findViewById(R.id.btnStop);
+
+
+
         btnStop.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -300,5 +315,7 @@ public class UnrecognizeActivity extends AppCompatActivity {
         appendToUI("Band is connecting...\n");
         return ConnectionState.CONNECTED == client.connect().await();
     }
-
+    private void resetAll(){
+        new com.project.udayanga.keepmerelax.DatabaseHelp.ResetUnRecognize(this).execute();
+    }
 }
