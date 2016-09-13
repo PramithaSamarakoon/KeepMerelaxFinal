@@ -9,6 +9,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_un_recognize2"
     tools:context="com.project.udayanga.keepmerelax.UnrecognizeActivity">
+
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,17 +71,18 @@
                     android:text="Start"
                     android:id="@+id/btnStart"
                     android:layout_gravity="center"/>
-                <Button
+                <!--<Button-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Stop"-->
+                    <!--android:id="@+id/btnStop"-->
+                    <!--android:layout_gravity="center"/>-->
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stop"
-                    android:id="@+id/btnStop"
-                    android:layout_gravity="center"/>
-                <Chronometer
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/chronometer1"
-                    android:layout_gravity="center"/>
+                    android:id="@+id/tv1"
+                    android:layout_gravity="center"
+                    android:text=""/>
             </LinearLayout>
         </LinearLayout>
 
@@ -109,17 +119,18 @@
                     android:text="Start"
                     android:id="@+id/btnStart2"
                     android:layout_gravity="center"/>
-                <Button
+                <!--<Button-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Stop"-->
+                    <!--android:id="@+id/btnStop2"-->
+                    <!--android:layout_gravity="center"/>-->
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stop"
-                    android:id="@+id/btnStop2"
-                    android:layout_gravity="center"/>
-                <Chronometer
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/chronometer2"
-                    android:layout_gravity="center"/>
+                    android:id="@+id/tv2"
+                    android:layout_gravity="center"
+                    android:text=""/>
             </LinearLayout>
         </LinearLayout>
 
@@ -155,17 +166,18 @@
                     android:text="Start"
                     android:id="@+id/btnStart3"
                     android:layout_gravity="center"/>
-                <Button
+                <!--<Button-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Stop"-->
+                    <!--android:id="@+id/btnStop3"-->
+                    <!--android:layout_gravity="center"/>-->
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Stop"
-                    android:id="@+id/btnStop3"
-                    android:layout_gravity="center"/>
-                <Chronometer
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/chronometer3"
-                    android:layout_gravity="center"/>
+                    android:id="@+id/tv3"
+                    android:layout_gravity="center"
+                    android:text=""/>
             </LinearLayout>
         </LinearLayout>
         <Button

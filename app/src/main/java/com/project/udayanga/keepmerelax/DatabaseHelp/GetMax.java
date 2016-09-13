@@ -20,15 +20,9 @@ import java.net.URL;
 public class GetMax extends AsyncTask<String,Void,String> {
 
     private Context context;
-    private int byGetOrPost = 0;
-    private String responseReturn;
 
     public GetMax (Context context) {
         this.context = context;
-        this.responseReturn=responseReturn;
-        //this.statusField = statusField;
-        // this.roleField = roleField;
-        //byGetOrPost = flag;
     }
 
     protected void onPreExecute(){
@@ -37,30 +31,32 @@ public class GetMax extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... arg0) {
 
-        try{
-            String link = "http://udayanga.me/kmr/get-max.php";
+            try{
 
-            URL url = new URL(link);
-            HttpClient client = new DefaultHttpClient();
-            HttpGet request = new HttpGet();
-            request.setURI(new URI(link));
-            HttpResponse response = client.execute(request);
-            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                String link = "http://udayanga.me/kmr/get-max.php";
 
-            StringBuffer sb = new StringBuffer("");
-            String line="";
+                URL url = new URL(link);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(link));
+                HttpResponse response = client.execute(request);
+                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
-            while ((line = in.readLine()) != null) {
-                sb.append(line);
-                break;
+                StringBuffer sb = new StringBuffer("");
+                String line="";
+
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                in.close();
+                return sb.toString();
             }
-            in.close();
-            return sb.toString();
-        }
 
-        catch(Exception e){
-            return new String("Exception: " + e.getMessage());
-        }
+            catch(Exception e){
+                return new String("Exception: " + e.getMessage());
+            }
+
     }
     @Override
     protected void onPostExecute(String result){

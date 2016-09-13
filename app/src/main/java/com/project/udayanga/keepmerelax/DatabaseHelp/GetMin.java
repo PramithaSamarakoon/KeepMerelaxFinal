@@ -21,15 +21,9 @@ public class GetMin extends AsyncTask<String,Void,String> {
 
 
     private Context context;
-    private int byGetOrPost = 0;
-    private String responseReturn;
 
     public GetMin (Context context) {
         this.context = context;
-        this.responseReturn=responseReturn;
-        //this.statusField = statusField;
-        // this.roleField = roleField;
-        //byGetOrPost = flag;
     }
 
     protected void onPreExecute(){
@@ -37,8 +31,8 @@ public class GetMin extends AsyncTask<String,Void,String> {
     }
     @Override
     protected String doInBackground(String... arg0) {
-
         try{
+
             String link = "http://udayanga.me/kmr/get-min.php";
 
             URL url = new URL(link);

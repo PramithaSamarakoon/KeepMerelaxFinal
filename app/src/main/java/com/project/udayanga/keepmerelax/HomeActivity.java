@@ -45,16 +45,17 @@ public class HomeActivity extends AppCompatActivity {
         * User not added
         *   Log in button will disable
         * */
-
+        int COUNT= Integer.parseInt(count);
         Button buttonCreate=(Button)findViewById(R.id.buttonCreateAccount);
         Button buttonLogin=(Button)findViewById(R.id.buttonLogin);
         buttonCreate.setEnabled(false);
         buttonLogin.setEnabled(false);
-        if(Objects.equals(count, "0")){
+
+        if(COUNT==0){
             buttonCreate.setEnabled(true);
             buttonLogin.setEnabled(false);
         }
-        else if(Objects.equals(count, "1")){
+        else if(COUNT>0){
             buttonCreate.setEnabled(false);
             buttonLogin.setEnabled(true);
         }

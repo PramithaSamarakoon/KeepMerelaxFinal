@@ -65,9 +65,11 @@ public class AddRate extends AsyncTask<String,Void,String> {
         else{
             try{
                 String rate = (String)arg0[0];
+                String method=(String)arg0[1];
 
                 String link="http://udayanga.me/kmr/add_rate.php";
                 String data  = URLEncoder.encode("rate", "UTF-8") + "=" + URLEncoder.encode(rate, "UTF-8");
+                data += "&" + URLEncoder.encode("method", "UTF-8") + "=" + URLEncoder.encode(method, "UTF-8");
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
