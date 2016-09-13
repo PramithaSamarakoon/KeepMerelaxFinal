@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -76,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBandHeartRateChanged(final BandHeartRateEvent event) {
             int low,high;
+                    /*
+                * TODO get actual PEAK value and LOW value
+                    * */
 
             if (event != null) {
                 appendToUI(String.format("Heart Rate = %d beats per minute\n"
@@ -225,13 +229,10 @@ public class MainActivity extends AppCompatActivity {
         String s="";
         @Override
         public void onLocationChanged(Location loc) {
-
-//            Toast.makeText(getBaseContext(),"Location changed : Lat: " +
-//                            loc.getLatitude()+ " Lng: " + loc.getLongitude(),
-//                    Toast.LENGTH_SHORT).show();
             String longitude = "Longitude: " +loc.getLongitude();
             String latitude = "Latitude: " +loc.getLatitude();
-    /*----------to get City-Name from coordinates ------------- */
+
+    //City-Name
             String cityName=null;
             Geocoder gcd = new Geocoder(getBaseContext(),
                     Locale.getDefault());
@@ -246,8 +247,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-//             s = longitude+"\n"+latitude +
-//                    "\n\nMy Currrent City is: "+cityName;
             Toast.makeText(MainActivity.this,s,Toast.LENGTH_LONG).show();
             TextView lat=(TextView)findViewById(R.id.lat);
             TextView lng=(TextView)findViewById(R.id.lng);
@@ -255,46 +254,24 @@ public class MainActivity extends AppCompatActivity {
 
             lat.setText(latitude);
             lng.setText(longitude);
-            location.setText(cityName);
+            location.setText("City Name: "+cityName);
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-            // TODO Auto-generated method stub
+            Toast.makeText(MainActivity.this,"GPS Disabled",Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onProviderEnabled(String provider) {
-            // TODO Auto-generated method stub
+            Toast.makeText(MainActivity.this,"GPS Enabled",Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onStatusChanged(String provider,
                                     int status, Bundle extras) {
-            // TODO Auto-generated method stub
+            Toast.makeText(MainActivity.this,"GPS State Changed",Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void Dialog(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("Are you sure,You wanted to make decision");
-
-        alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                Toast.makeText(MainActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 
     private void sendSMS(String number){
@@ -321,6 +298,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void Notification(String number,String message){
+
+        /*
+        * TODO create proper notification
+        * */
+
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         try{
 

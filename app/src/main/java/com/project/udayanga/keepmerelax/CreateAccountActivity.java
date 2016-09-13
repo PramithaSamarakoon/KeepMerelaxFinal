@@ -29,8 +29,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                resetFields();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -48,6 +47,26 @@ public class CreateAccountActivity extends AppCompatActivity {
                 onUnRecognizeButtonClick();
             }
         });
+    }
+
+    private void resetFields(){
+        name = (EditText)findViewById(R.id.editTextName);
+        contact_number=(EditText)findViewById(R.id.editTextContactNumber);
+        email=(EditText)findViewById(R.id.editTextEmail);
+        pass=(EditText)findViewById(R.id.editTextPass);
+        conPass=(EditText)findViewById(R.id.editTextConfirmPass);
+        date=(EditText)findViewById(R.id.editTextDate);
+        month=(EditText)findViewById(R.id.editTextMonth);
+        year=(EditText)findViewById(R.id.editTextYear);
+
+        name.setText("");
+        contact_number.setText("");
+        email.setText("");
+        pass.setText("");
+        conPass.setText("");
+        date.setText("");
+        month.setText("");
+        year.setText("");
     }
     public void onRecognizeButtonClick(){
         try{

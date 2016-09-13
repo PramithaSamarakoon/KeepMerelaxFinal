@@ -18,10 +18,12 @@
         android:layout_height="match_parent">
 
         <TextView
+            style="@style/txtInstuction"
             android:id="@+id/txtStep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/steps" />
+            android:text="@string/steps"
+            android:paddingBottom="30dp"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

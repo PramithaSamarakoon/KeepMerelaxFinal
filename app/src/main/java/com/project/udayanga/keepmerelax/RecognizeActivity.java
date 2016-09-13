@@ -31,8 +31,7 @@ public class RecognizeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                resetFields();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,6 +46,13 @@ public class RecognizeActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void resetFields(){
+        low=(EditText)findViewById(R.id.editTextLow);
+        peak=(EditText)findViewById(R.id.editTextPeak);
+
+        low.setText("");
+        peak.setText("");
     }
     private void saveUser(){
         Bundle bundle=getIntent().getExtras();
