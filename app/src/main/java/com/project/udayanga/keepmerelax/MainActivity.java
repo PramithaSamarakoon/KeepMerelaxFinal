@@ -72,13 +72,19 @@ public class MainActivity extends AppCompatActivity {
     static final String HIGH_HEART = " Your heart rate has reached a critical state. A message will be send to the necessary parties ";
     static final String LOW_HEART = "Your heart rate has reached a critical state. A message will be send to the necessary parties ";
 
+    String low,peak;
 
     private BandHeartRateEventListener mHeartRateEventListener = new BandHeartRateEventListener() {
         @Override
         public void onBandHeartRateChanged(final BandHeartRateEvent event) {
-            int low,high;
+            int LOW,PEAK;
+            String S_LOW=getLow();
+            String S_PEAK=getPeak();
+
+            LOW= Integer.parseInt(S_LOW);
+            PEAK= Integer.parseInt(S_PEAK);
                     /*
-                * TODO get actual PEAK value and LOW value
+                    * TODO check get actual PEAK value and LOW value
                     * */
 
             if (event != null) {
@@ -87,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 //speakText(HIGH_HEART);
 
             }
-            if (100 < event.getHeartRate()) {
+            if (PEAK < event.getHeartRate()) {
                 try {
                     speakText(HIGH_HEART);
                     sendAlert();
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-            if (70 > event.getHeartRate()) {
+            if (LOW > event.getHeartRate()) {
                 speakText(LOW_HEART);
             }
         }
@@ -150,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        getPeakLow();
 
         txtStatus = (TextView) findViewById(R.id.txtStatus);
         btnStart = (Button) findViewById(R.id.btnStart);
@@ -274,6 +280,50 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public String getLow() {
+        return low;
+    }
+
+    public String getPeak() {
+        return peak;
+    }
+
+    public void setLow(String low) {
+        this.low = low;
+    }
+
+    public void setPeak(String peak) {
+        this.peak = peak;
+    }
+
+    private void getPeakLow(){
+        String LOW = null,PEAK = null;
+        try{
+            com.project.udayanga.keepmerelax.DatabaseHelp.GetLowHigh getMax = new com.project.udayanga.keepmerelax.DatabaseHelp.GetLowHigh(this);
+            getMax.execute();
+            String s=getMax.get();
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(s);
+            JSONArray lang= (JSONArray) jsonObject.get("product");
+            Iterator i = lang.iterator();
+
+            while (i.hasNext()) {
+                JSONObject innerObj = (JSONObject) i.next();
+                LOW=(String)innerObj.get("low");
+                PEAK=(String)innerObj.get("peak");
+            }
+
+            setLow(LOW);setPeak(PEAK);
+            Toast.makeText(this,  LOW +"\n"+PEAK,Toast.LENGTH_LONG).show();
+
+
+        }
+        catch(Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+            System.out.println("Error MAX" + e.getMessage());
+        }
+    }
     private void sendSMS(String number){
 
         try{
@@ -291,13 +341,13 @@ public class MainActivity extends AppCompatActivity {
             SmsManager sms = SmsManager.getDefault();
             sms.sendTextMessage(number, null, message, null, null);
             Toast.makeText(MainActivity.this,"Successfully Send", Toast.LENGTH_SHORT).show();
-            Notification(number, message);
+            Notification(number);
         }
         catch(Exception e){
             Toast.makeText(MainActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
         }
     }
-    private void Notification(String number,String message){
+    private void Notification(String number){
 
         /*
         * TODO create proper notification
@@ -366,10 +416,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
-    private void calculateRate(int heart_rate){
 
-
-    }
     @Override
     protected void onResume() {
         super.onResume();

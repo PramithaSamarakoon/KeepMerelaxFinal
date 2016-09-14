@@ -31,9 +31,9 @@ public class GetLowHigh extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... arg0) {
 
         try{
-            String loc = (String)arg0[0];
 
-            String link = "http://udayanga.me/kmr/get-all-contact.php";
+
+            String link = "http://udayanga.me/kmr/get-low-high.php";
 
             URL url = new URL(link);
             HttpClient client = new DefaultHttpClient();

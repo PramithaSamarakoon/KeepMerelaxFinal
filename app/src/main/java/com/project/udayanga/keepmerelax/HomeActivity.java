@@ -1,7 +1,13 @@
 package com.project.udayanga.keepmerelax;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,55 +34,84 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
-        String count= isRegistered();
+        if(isConnected()){
+            String count= isRegistered();
         /*Disable button  when
         * User alredy created,
         *   Register button will disable
         * User not added
         *   Log in button will disable
         * */
-        int COUNT= Integer.parseInt(count);
-        Button buttonCreate=(Button)findViewById(R.id.buttonCreateAccount);
-        Button buttonLogin=(Button)findViewById(R.id.buttonLogin);
-        buttonCreate.setEnabled(false);
-        buttonLogin.setEnabled(false);
-
-        if(COUNT==0){
-            buttonCreate.setEnabled(true);
-            buttonLogin.setEnabled(false);
-        }
-        else if(COUNT>0){
+            int COUNT= Integer.parseInt(count);
+            Button buttonCreate=(Button)findViewById(R.id.buttonCreateAccount);
+            Button buttonLogin=(Button)findViewById(R.id.buttonLogin);
             buttonCreate.setEnabled(false);
-            buttonLogin.setEnabled(true);
-        }
-        else {Toast.makeText(this,count,Toast.LENGTH_LONG).show();}
+            buttonLogin.setEnabled(false);
 
-        buttonCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(HomeActivity.this, CreateAccountActivity.class);
-                startActivity(intent);
+            if(COUNT==0){
+                buttonCreate.setEnabled(true);
+                buttonLogin.setEnabled(false);
             }
-        });
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                startActivity(intent);
+            else if(COUNT>0){
+                buttonCreate.setEnabled(false);
+                buttonLogin.setEnabled(true);
             }
-        });
+            else {Toast.makeText(this,count,Toast.LENGTH_LONG).show();}
+
+            buttonCreate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent= new Intent(HomeActivity.this, CreateAccountActivity.class);
+                    startActivity(intent);
+                }
+            });
+            buttonLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+        }else connectionAlert();
 
 
+    }
+    private boolean isConnected(){
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
+    protected void connectionAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your Device is not connected to the internet")
+                .setCancelable(false)
+                .setTitle("Turn on Data")
+                .setPositiveButton("Turn On",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // finish the current activity
+                                // AlertBoxAdvance.this.finish();
+                                Intent myIntent = new Intent(
+                                        Settings.ACTION_WIRELESS_SETTINGS);
+                                startActivity(myIntent);
+                                dialog.cancel();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // cancel the dialog box
+                                //dialog.cancel();
+                                finish();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
     private String isRegistered(){
         String responseReturn = null;
